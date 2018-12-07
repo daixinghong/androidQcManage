@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@mipmap/bttun_denglu_click_denglujiemian" android:state_pressed="true"/>
+    <item android:drawable="@mipmap/button_denglu_denglujiemian" android:state_pressed="false"/>
+
+
+</selector>
