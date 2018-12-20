@@ -25,7 +25,17 @@
         <activity android:name=".user.view.register.RegisterActivity" />
         <activity android:name=".user.view.register.ForgetPasswordActivity" />
         <activity android:name=".user.view.login.LoginActivity" />
-        <activity android:name=".CustomCaptureActivity"></activity>
+        <activity android:name=".CustomCaptureActivity" />
+        <activity android:name=".devices.view.activity.LocalModelDownloadActivity" />
+        <activity android:name=".devices.view.activity.LocalServerDetailsActivity" />
+        <activity android:name=".result.view.activity.ResultDetailsActivity" />
+        <activity android:name=".devices.view.activity.ConfigureManageActivity" />
+        <activity android:name=".devices.view.activity.ConfigureDetailManageActivity" />
+        <activity android:name=".devices.view.activity.SwitchConfigureActivity" />
+        <activity android:name=".devices.view.activity.ConfigDetailActivity" />
+        <activity android:name=".devices.view.activity.TerminalDetailActivity" />
+        <activity android:name=".devices.view.activity.ModelDetailActivity" />
+        <activity android:name=".result.view.activity.TerminalResultDetailActivity"></activity>
     </application>
 
 </manifest>

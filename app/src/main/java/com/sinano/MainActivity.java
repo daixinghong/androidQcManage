@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -29,8 +30,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     @BindView(R.id.rl_back)
     RelativeLayout mRlBack;
-    @BindView(R.id.tv_title)
-    TextView mTvTitle;
     @BindView(R.id.rb_work)
     RadioButton mRbWork;
     @BindView(R.id.rd_my_devices)
@@ -40,9 +39,11 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @BindView(R.id.rd_group)
     RadioGroup mRdGroup;
     @BindView(R.id.rl_scan)
-    RelativeLayout mRlScan;
+    LinearLayout mRlScan;
     @BindView(R.id.rb_my)
     RadioButton mRbMy;
+    @BindView(R.id.tv_user_name)
+    TextView mTvUserName;
     // 用来计算返回键的点击间隔时间
     private long exitTime = 0;
     private HomeFragment mHomeFragment;
@@ -75,7 +76,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-
                 ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.press2finsh));
                 exitTime = System.currentTimeMillis();
             } else {
@@ -100,7 +100,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     transaction.show(mHomeFragment);
                 }
 
-                mTvTitle.setText(UiUtils.findStringBuId(R.string.home));
                 break;
             case R.id.rd_my_devices:
                 if (mDevicesFragment == null) {
@@ -110,7 +109,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     transaction.show(mDevicesFragment);
                 }
 
-                mTvTitle.setText(UiUtils.findStringBuId(R.string.devices_manage));
                 break;
             case R.id.rb_hint:
                 if (mCheckResultFragment == null) {
@@ -120,7 +118,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     transaction.show(mCheckResultFragment);
                 }
 
-                mTvTitle.setText(UiUtils.findStringBuId(R.string.check_result));
                 break;
             case R.id.rb_my:
                 if (mMyFragment == null) {
@@ -129,7 +126,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 } else {
                     transaction.show(mMyFragment);
                 }
-                mTvTitle.setText(UiUtils.findStringBuId(R.string.user_center));
 
                 break;
         }

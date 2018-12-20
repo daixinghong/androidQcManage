@@ -9,10 +9,13 @@ import android.widget.TextView;
 
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
+import com.sinano.base.BaseResultBean;
 import com.sinano.user.model.LoginBean;
 import com.sinano.user.model.RegisterBean;
 import com.sinano.user.presenter.LoginInterface;
 import com.sinano.user.presenter.LoginPresenter;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,7 +60,17 @@ public class RegisterActivity extends BaseActivity implements LoginInterface {
     }
 
     @Override
+    public Map<String, Object> getMap() {
+        return null;
+    }
+
+    @Override
     public void registerSuccess(RegisterBean registerBean) {
+
+    }
+
+    @Override
+    public void logoutSuccess(BaseResultBean baseResultBean) {
 
     }
 

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import com.sinano.MainActivity;
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
+import com.sinano.base.BaseResultBean;
 import com.sinano.user.model.LoginBean;
 import com.sinano.user.model.RegisterBean;
 import com.sinano.user.presenter.LoginInterface;
@@ -19,6 +20,11 @@ import com.sinano.user.presenter.LoginPresenter;
 import com.sinano.utils.IntentUtils;
 import com.sinano.utils.ToastUtils;
 import com.sinano.utils.UiUtils;
+import com.sinano.websocket.SocketClient;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,6 +54,15 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
     }
 
     private void initData() {
+
+        try {
+            SocketClient socketClient = new SocketClient(new URI("ws://192.168.10.161:8765"));
+            socketClient.connect();
+
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
         mPresenter = new LoginPresenter(this);
     }
 
@@ -63,7 +78,17 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
     }
 
     @Override
+    public Map<String, Object> getMap() {
+        return null;
+    }
+
+    @Override
     public void registerSuccess(RegisterBean registerBean) {
+
+    }
+
+    @Override
+    public void logoutSuccess(BaseResultBean baseResultBean) {
 
     }
 
@@ -78,25 +103,24 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
     }
 
 
-    @OnClick({R.id.btn_login,R.id.rl_delete})
+    @OnClick({R.id.btn_login, R.id.rl_delete})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
 
-                if(TextUtils.isEmpty(mEtInputUserName.getText().toString().trim())){
+                if (TextUtils.isEmpty(mEtInputUserName.getText().toString().trim())) {
 //                    return;
                 }
 
-                if(TextUtils.isEmpty(mEtInputPassword.getText().toString().trim())){
+                if (TextUtils.isEmpty(mEtInputPassword.getText().toString().trim())) {
 //                    return;
                 }
 
                 //登陆
-                IntentUtils.startActivity(this, MainActivity.class);
-
+                IntentUtils.startActivityAndFinish(this, MainActivity.class);
 
                 break;
-            case  R.id.rl_delete:
+            case R.id.rl_delete:
                 mEtInputPassword.setText("");
                 break;
         }
