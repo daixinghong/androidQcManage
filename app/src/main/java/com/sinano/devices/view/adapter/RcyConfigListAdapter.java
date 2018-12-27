@@ -61,7 +61,7 @@ public class RcyConfigListAdapter extends RecyclerView.Adapter<RcyConfigListAdap
 
     @Override
     public int getItemCount() {
-        return mList == null ? 5 : mList.size();
+        return mList == null ? 3 : mList.size();
     }
 
 

@@ -10,7 +10,7 @@ public class BaseResultBean {
      */
 
     private int code;
-    private DataBean data;
+    private Object data;
     private String msg;
 
     public int getCode() {
@@ -21,11 +21,11 @@ public class BaseResultBean {
         this.code = code;
     }
 
-    public DataBean getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(DataBean data) {
+    public void setData(Object data) {
         this.data = data;
     }
 

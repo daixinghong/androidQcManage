@@ -34,7 +34,9 @@
             <LinearLayout
                 android:id="@+id/lr_login_user"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50">
+                android:layout_height="@dimen/dp_50"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -50,6 +52,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/dp_14"
                     android:background="@null"
+                    android:focusable="true"
                     android:hint="@string/login_user_hint"
                     android:maxLength="16"
                     android:singleLine="true"
@@ -133,7 +136,27 @@
             android:background="@drawable/login_selector"
             android:text="@string/login"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_16"
+            android:visibility="gone" />
+
+        <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
+            android:id="@+id/btn_id"
+            android:layout_width="@dimen/dp_270"
+            android:layout_height="@dimen/dp_40"
+            android:layout_below="@+id/ll_login_info"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/dp_18"
+            android:layout_marginRight="@dimen/dp_18"
+            android:layout_marginTop="@dimen/dp_40"
+            android:background="@color/color_FF1DA1EA"
+            android:text="@string/login"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            android:visibility="visible"
+            app:spinning_bar_color="#FFF"
+            app:spinning_bar_padding="6dp"
+            app:spinning_bar_width="4dp"></br.com.simplepass.loading_button_lib.customViews.CircularProgressButton>
+
 
     </RelativeLayout>
 

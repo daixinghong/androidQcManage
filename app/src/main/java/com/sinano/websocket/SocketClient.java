@@ -10,6 +10,25 @@ import java.net.URI;
 public class SocketClient extends WebSocketClient {
 
     private String TAG = "daixinhong";
+
+    private onCallBack mOnCallBack;
+
+    public interface onCallBack {
+
+        void open(ServerHandshake handshake);
+
+        void message(String message);
+
+        void close(int code, String reason, boolean remote);
+
+        void onError(Exception e);
+
+    }
+
+    public void setOnCallBackListener(onCallBack onCallBackListener) {
+        this.mOnCallBack = onCallBackListener;
+    }
+
     public SocketClient(URI serverUri) {
         super(serverUri);
     }
@@ -17,22 +36,31 @@ public class SocketClient extends WebSocketClient {
     @Override
     public void onOpen(ServerHandshake handshakedata) {
 
-        Log.e(TAG, "onOpen: 打开成功" );
+        if (mOnCallBack != null) {
+            mOnCallBack.open(handshakedata);
+        }
 
     }
 
     @Override
     public void onMessage(String message) {
+        if (mOnCallBack != null) {
+            mOnCallBack.message(message);
+        }
 
     }
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-
+        if (mOnCallBack != null) {
+            mOnCallBack.close(code, reason, remote);
+        }
     }
 
     @Override
     public void onError(Exception ex) {
-        Log.e(TAG, "onError: 连接失败" );
+        if (mOnCallBack != null) {
+            mOnCallBack.onError(ex);
+        }
     }
 }

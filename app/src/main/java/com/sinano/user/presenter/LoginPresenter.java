@@ -40,7 +40,7 @@ public class LoginPresenter {
                 .subscribe(mLoginInterface::logoutSuccess, mLoginInterface::getDataError);
     }
 
-    public void regitster() {
+    public void updataPassword() {
         Network
                 .getObserableIntence()
                 .register(mLoginInterface.getMap())

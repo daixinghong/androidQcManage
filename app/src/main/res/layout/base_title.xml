@@ -6,11 +6,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48">
+        android:layout_height="@dimen/dp_48"
+        android:background="@color/color_242525">
 
         <RelativeLayout
             android:id="@+id/rl_back"
-            android:layout_width="@dimen/dp_40"
+            android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_48"
             android:layout_centerVertical="true">
 
@@ -18,9 +19,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_12"
+                android:layout_marginLeft="@dimen/dp_5"
                 android:background="@mipmap/left_key"
                 android:visibility="visible" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_17"
+                android:text="@string/back"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_13" />
+
         </RelativeLayout>
 
         <TextView
@@ -28,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/sp_16" />
 
 
@@ -40,7 +51,6 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:layout_marginTop="14dp"
-            android:background="@drawable/task_click_selector"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:visibility="gone">
@@ -51,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/save"
-                android:textColor="#358fc1"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
         </RelativeLayout>
 

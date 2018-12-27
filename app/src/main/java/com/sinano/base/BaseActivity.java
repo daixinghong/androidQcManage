@@ -2,12 +2,13 @@ package com.sinano.base;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import butterknife.ButterKnife;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    public static final String TAG ="sinano" ;
+    public static final String TAG = "sinano";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     public void getDataError(Throwable throwable) {
+        Log.e(TAG, "getDataError: " + throwable.getMessage());
 
     }
 

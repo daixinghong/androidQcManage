@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.data.BarDataSet;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -34,6 +36,14 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         mBind.unbind();
+    }
+
+    public void initBarDataSet(BarDataSet barDataSet, int color) {
+        barDataSet.setColor(color);
+        barDataSet.setFormLineWidth(1f);
+        barDataSet.setFormSize(15.f);
+        barDataSet.setDrawValues(true);
+        barDataSet.setValueTextSize(11f);
     }
 
 }

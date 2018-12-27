@@ -1,13 +1,17 @@
 package com.sinano.result.view.activity;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
 import com.sinano.result.view.adapter.ElResultDetailAdapter;
+import com.sinano.result.view.adapter.RcyChartListAdapter;
 import com.sinano.utils.UiUtils;
 import com.sinano.weight.MyExpandableListView;
 
@@ -32,6 +36,10 @@ public class TerminalResultDetailActivity extends BaseActivity {
     TextView mTvAllCount;
     @BindView(R.id.el_list)
     MyExpandableListView mElList;
+    @BindView(R.id.rcy_chart_list)
+    RecyclerView mRcyChartList;
+    @BindView(R.id.scrollView)
+    ScrollView mScrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,17 @@ public class TerminalResultDetailActivity extends BaseActivity {
 
         ElResultDetailAdapter adapter = new ElResultDetailAdapter(this, null);
         mElList.setAdapter(adapter);
+
+        LinearLayoutManager manager = new LinearLayoutManager(this) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        mRcyChartList.setLayoutManager(manager);
+
+        RcyChartListAdapter chartListAdapter = new RcyChartListAdapter(this, null);
+        mRcyChartList.setAdapter(chartListAdapter);
 
     }
 

@@ -21,4 +21,13 @@ public class ConfigPresenter {
                 .subscribe(mInterface::getConfigListDataSuccess, mInterface::getDataError);
     }
 
+    public void getConfigVersionList(String id) {
+        Network
+                .getObserableIntence()
+                .configVersionDetail(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mInterface::getConfigVersionDetailSuccess, mInterface::getDataError);
+    }
+
 }

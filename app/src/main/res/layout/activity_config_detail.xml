@@ -112,14 +112,14 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:background="@drawable/item_border_shape">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="@string/seq"
+                        android:text="@string/part"
                         android:textColor="@color/color_242525"
                         android:textSize="@dimen/sp_12" />
 
@@ -129,14 +129,14 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="3"
                     android:background="@drawable/item_border_shape">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:text="@string/version"
+                        android:text="@string/address_parms"
                         android:textColor="@color/color_242525"
                         android:textSize="@dimen/sp_12" />
 
@@ -145,7 +145,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
                     android:background="@drawable/item_border_shape">
 
                     <TextView
@@ -162,7 +162,7 @@
 
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rcy_configure_version_list"
+                android:id="@+id/rcy_config_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/tab_list_shape"></android.support.v7.widget.RecyclerView>

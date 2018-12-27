@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
+import com.sinano.devices.model.ConfigDetailBean;
 import com.sinano.devices.model.ConfigListBean;
 import com.sinano.devices.presenter.ConfigInterface;
 import com.sinano.devices.presenter.ConfigPresenter;
@@ -103,6 +104,11 @@ public class ConfigureManageActivity extends BaseActivity implements ConfigInter
                 break;
 
         }
+
+    }
+
+    @Override
+    public void getConfigVersionDetailSuccess(ConfigDetailBean configDetailBean) {
 
     }
 }

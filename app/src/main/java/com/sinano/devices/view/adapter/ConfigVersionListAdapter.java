@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sinano.R;
-import com.sinano.devices.model.ConfigListBean;
+import com.sinano.devices.model.ConfigDetailBean;
 import com.sinano.devices.view.activity.ConfigDetailActivity;
 import com.sinano.utils.IntentUtils;
 
@@ -19,7 +19,7 @@ import java.util.List;
 public class ConfigVersionListAdapter extends RecyclerView.Adapter<ConfigVersionListAdapter.ConfigVersionHolder> {
 
     private Context mContext;
-    private List<ConfigListBean.DataBean.RecordsBean> mList;
+    private List<ConfigDetailBean.DataBean> mList;
     private OnItemClickListener mOnItemClickListener;
 
 
@@ -31,7 +31,7 @@ public class ConfigVersionListAdapter extends RecyclerView.Adapter<ConfigVersion
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public ConfigVersionListAdapter(Context context, List<ConfigListBean.DataBean.RecordsBean> list) {
+    public ConfigVersionListAdapter(Context context, List<ConfigDetailBean.DataBean> list) {
         this.mContext = context;
         this.mList = list;
 
@@ -47,7 +47,7 @@ public class ConfigVersionListAdapter extends RecyclerView.Adapter<ConfigVersion
 
     @Override
     public void onBindViewHolder(ConfigVersionHolder holder, final int position) {
-//        holder.mTvVersion.setText(mList.get(position).getCreateTime());
+        holder.mTvVersion.setText(mList.get(position).getVersion());
         holder.mTvSeq.setText(position + 1 + "");
 
         holder.mRlDetail.setOnClickListener(new View.OnClickListener() {

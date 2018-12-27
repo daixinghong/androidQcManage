@@ -14,18 +14,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sinano.base.BaseActivity;
+import com.sinano.devices.model.TypeBean;
+import com.sinano.devices.presenter.CommInterface;
+import com.sinano.devices.presenter.CommPresenter;
 import com.sinano.devices.view.fragment.DevicesManageFragment;
+import com.sinano.devices.view.fragment.SupperCompanyDeviceFragment;
 import com.sinano.result.view.fragment.CheckResultManageFragment;
+import com.sinano.user.view.activity.UserCenterActivity;
 import com.sinano.user.view.manage.MyFragment;
 import com.sinano.utils.Constant;
+import com.sinano.utils.IntentUtils;
+import com.sinano.utils.SpUtils;
 import com.sinano.utils.ToastUtils;
 import com.sinano.utils.UiUtils;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, CommInterface {
 
 
     @BindView(R.id.rl_back)
@@ -44,6 +53,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     RadioButton mRbMy;
     @BindView(R.id.tv_user_name)
     TextView mTvUserName;
+    @BindView(R.id.ll_user_center)
+    LinearLayout mLLUserCenter;
     // 用来计算返回键的点击间隔时间
     private long exitTime = 0;
     private HomeFragment mHomeFragment;
@@ -51,6 +62,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private CheckResultManageFragment mCheckResultFragment;
     private MyFragment mMyFragment;
     private int REQUEST_CODE = 12138;
+    private SupperCompanyDeviceFragment mSupperCompanyDeviceFragment;
 
 
     @Override
@@ -61,8 +73,16 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     private void init() {
+
+        String userName = (String) SpUtils.getParam(this, Constant.USER_NAME, "");
+        mTvUserName.setText(userName);
+        int userId = (int) SpUtils.getParam(this, Constant.USER_ID, 0);
+
         mRdGroup.setOnCheckedChangeListener(this);
         mRbWork.setChecked(true);
+
+        CommPresenter presenter = new CommPresenter(this);
+        presenter.getType();
 
     }
 
@@ -108,6 +128,12 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 } else {
                     transaction.show(mDevicesFragment);
                 }
+//                if (mSupperCompanyDeviceFragment == null) {
+//                    mSupperCompanyDeviceFragment = new SupperCompanyDeviceFragment();
+//                    transaction.add(R.id.fragment_container, mSupperCompanyDeviceFragment);
+//                } else {
+//                    transaction.show(mSupperCompanyDeviceFragment);
+//                }
 
                 break;
             case R.id.rb_hint:
@@ -166,6 +192,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         if (mDevicesFragment != null) {
             transaction.hide(mDevicesFragment);
         }
+        if (mSupperCompanyDeviceFragment != null) {
+            transaction.hide(mSupperCompanyDeviceFragment);
+        }
         if (mCheckResultFragment != null) {
             transaction.hide(mCheckResultFragment);
         }
@@ -174,11 +203,17 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
     }
 
-    @OnClick({R.id.rl_scan})
+    @OnClick({R.id.rl_scan, R.id.ll_user_center})
     public void onClick(View view) {
-        Intent intent = new Intent(MainActivity.this, CustomCaptureActivity.class);
-        startActivityForResult(intent, REQUEST_CODE);
-
+        switch (view.getId()) {
+            case R.id.rl_scan:
+                Intent intent = new Intent(MainActivity.this, CustomCaptureActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
+                break;
+            case R.id.ll_user_center:
+                IntentUtils.startActivity(this, UserCenterActivity.class);
+                break;
+        }
 
     }
 
@@ -202,5 +237,17 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             }
         }
 
+    }
+
+    @Override
+    public void getTypeSuccess(TypeBean typeBean) {
+        switch (typeBean.getCode()) {
+            case 200:
+                List<TypeBean.DataBean> data = typeBean.getData();
+                for (int i = 0; i < data.size(); i++) {
+                    SpUtils.putParms(this, data.get(i).getId(), data.get(i).getName());
+                }
+                break;
+        }
     }
 }

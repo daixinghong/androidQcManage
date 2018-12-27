@@ -5,6 +5,7 @@ import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
 
 public class SocketServer extends WebSocketServer {
+
     @Override
     public void onOpen(WebSocket conn, ClientHandshake handshake) {
 

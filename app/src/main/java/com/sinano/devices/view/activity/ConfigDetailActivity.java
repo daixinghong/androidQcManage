@@ -9,13 +9,18 @@ import android.widget.TextView;
 
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
+import com.sinano.devices.model.ConfigDetailBean;
+import com.sinano.devices.model.ConfigListBean;
+import com.sinano.devices.presenter.ConfigInterface;
 import com.sinano.devices.view.adapter.RcyConfigDetailAdapter;
 import com.sinano.utils.UiUtils;
+
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class ConfigDetailActivity extends BaseActivity {
+public class ConfigDetailActivity extends BaseActivity implements ConfigInterface {
 
     @BindView(R.id.rl_back)
     RelativeLayout mRlBack;
@@ -33,8 +38,8 @@ public class ConfigDetailActivity extends BaseActivity {
     RelativeLayout mRlSave;
     @BindView(R.id.tv_save)
     TextView mTvSave;
-    @BindView(R.id.rcy_configure_version_list)
-    RecyclerView mRcyConfigureVersionList;
+    @BindView(R.id.rcy_config_detail)
+    RecyclerView mRcyConfigDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,17 +51,16 @@ public class ConfigDetailActivity extends BaseActivity {
     private void init() {
 
         mTvTitle.setText(UiUtils.findStringBuId(R.string.config_detail));
-        mRlSave.setVisibility(View.VISIBLE);
         LinearLayoutManager manager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
                 return false;
             }
         };
-        mRcyConfigureVersionList.setLayoutManager(manager);
+        mRcyConfigDetail.setLayoutManager(manager);
 
         RcyConfigDetailAdapter adapter = new RcyConfigDetailAdapter(this, null);
-        mRcyConfigureVersionList.setAdapter(adapter);
+        mRcyConfigDetail.setAdapter(adapter);
 
     }
 
@@ -75,5 +79,20 @@ public class ConfigDetailActivity extends BaseActivity {
 
                 break;
         }
+    }
+
+    @Override
+    public Map<String, Object> getMap() {
+        return null;
+    }
+
+    @Override
+    public void getConfigListDataSuccess(ConfigListBean configListBean) {
+
+    }
+
+    @Override
+    public void getConfigVersionDetailSuccess(ConfigDetailBean configDetailBean) {
+
     }
 }

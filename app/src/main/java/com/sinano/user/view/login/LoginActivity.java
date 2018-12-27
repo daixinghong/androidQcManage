@@ -2,6 +2,7 @@ package com.sinano.user.view.login;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -9,23 +10,28 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.google.gson.Gson;
 import com.sinano.MainActivity;
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
 import com.sinano.base.BaseResultBean;
 import com.sinano.user.model.LoginBean;
-import com.sinano.user.model.RegisterBean;
 import com.sinano.user.presenter.LoginInterface;
 import com.sinano.user.presenter.LoginPresenter;
+import com.sinano.utils.Constant;
 import com.sinano.utils.IntentUtils;
+import com.sinano.utils.SpUtils;
 import com.sinano.utils.ToastUtils;
 import com.sinano.utils.UiUtils;
 import com.sinano.websocket.SocketClient;
 
+import org.java_websocket.handshake.ServerHandshake;
+
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -42,8 +48,13 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
     RelativeLayout mRlDelete;
     @BindView(R.id.btn_login)
     Button mBtnLogin;
+    @BindView(R.id.btn_id)
+    CircularProgressButton mBtnId;
     private LoginPresenter mPresenter;
     private long exitTime;
+    private SocketClient mSocketClient;
+    private Gson gson = new Gson();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +67,46 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
     private void initData() {
 
         try {
-            SocketClient socketClient = new SocketClient(new URI("ws://192.168.10.161:8765"));
-            socketClient.connect();
+            mSocketClient = new SocketClient(new URI("ws://192.168.1.187:8765"));
+            mSocketClient.setOnCallBackListener(new SocketClient.onCallBack() {
+                @Override
+                public void open(ServerHandshake handshake) {
+                    Log.e(TAG, "message: 打开端口");
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("type", 1);
+                    map.put("id", "02:00:00:00:00:00");
+                    mSocketClient.send(gson.toJson(map));
+                }
 
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+                @Override
+                public void message(String message) {
+                    Log.e(TAG, "message: " + message);
+                }
+
+                @Override
+                public void close(int code, String reason, boolean remote) {
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+
+                }
+            });
+            mSocketClient.connect();
+//            if (!socketClient.isOpen()) {
+//                socketClient.connect();
+//            } else {
+//
+//            }
+        } catch (Exception e) {
+            Log.e(TAG, "initData: " + e.getMessage());
         }
 
+        mEtInputUserName.setText((String) SpUtils.getParam(this, Constant.USER, ""));
         mPresenter = new LoginPresenter(this);
+
+
     }
 
     @Override
@@ -75,6 +118,20 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
     @Override
     public void loginSuccess(LoginBean loginBean) {
 
+        mBtnId.revertAnimation();
+        switch (loginBean.getCode()) {
+            case 200:
+                SpUtils.putParms(this, Constant.TOKEN, loginBean.getData().getToken());
+                SpUtils.putParms(this, Constant.USER_NAME, loginBean.getData().getNickname());
+                SpUtils.putParms(this, Constant.USER_ID, loginBean.getData().getUid());
+                SpUtils.putParms(this, Constant.USER, mEtInputUserName.getText().toString().trim());
+                SpUtils.putParms(this, Constant.ADMIN, loginBean.getData().isAdmin());
+                IntentUtils.startActivityAndFinish(this, MainActivity.class);
+                break;
+            case -1:
+                ToastUtils.showTextToast(loginBean.getMsg());
+                break;
+        }
     }
 
     @Override
@@ -83,13 +140,15 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
     }
 
     @Override
-    public void registerSuccess(RegisterBean registerBean) {
+    public void registerSuccess(BaseResultBean baseResultBean) {
 
     }
+
 
     @Override
     public void logoutSuccess(BaseResultBean baseResultBean) {
 
+//        mBtnId.stopAnimation();
     }
 
     @Override
@@ -103,25 +162,36 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
     }
 
 
-    @OnClick({R.id.btn_login, R.id.rl_delete})
+    @OnClick({R.id.btn_login, R.id.rl_delete, R.id.btn_id})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
 
-                if (TextUtils.isEmpty(mEtInputUserName.getText().toString().trim())) {
-//                    return;
-                }
-
-                if (TextUtils.isEmpty(mEtInputPassword.getText().toString().trim())) {
-//                    return;
-                }
-
-                //登陆
-                IntentUtils.startActivityAndFinish(this, MainActivity.class);
-
                 break;
             case R.id.rl_delete:
                 mEtInputPassword.setText("");
+                break;
+            case R.id.btn_id:
+
+                if (mSocketClient.isOpen()) {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("type", 3);
+                    map.put("id", "02:00:00:00:00:23");
+                    mSocketClient.send(gson.toJson(map));
+                }
+
+                if (TextUtils.isEmpty(mEtInputUserName.getText().toString().trim())) {
+                    ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.user_name_no_empty));
+                    return;
+                }
+
+                if (TextUtils.isEmpty(mEtInputPassword.getText().toString().trim())) {
+                    ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.password_no_empty));
+                    return;
+                }
+                mBtnId.startAnimation();
+                mPresenter.login();
+
                 break;
         }
     }

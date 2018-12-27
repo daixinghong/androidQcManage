@@ -35,7 +35,14 @@
         <activity android:name=".devices.view.activity.ConfigDetailActivity" />
         <activity android:name=".devices.view.activity.TerminalDetailActivity" />
         <activity android:name=".devices.view.activity.ModelDetailActivity" />
-        <activity android:name=".result.view.activity.TerminalResultDetailActivity"></activity>
+        <activity android:name=".result.view.activity.TerminalResultDetailActivity" />
+        <activity android:name=".user.view.activity.UserCenterActivity" />
+        <activity android:name=".user.view.activity.UserManageActivity" />
+        <activity android:name=".devices.view.activity.CompanyDeviceActivity" />
+        <activity android:name=".user.view.activity.UpdataPasswordActivity" />
+        <activity android:name=".result.view.activity.DeviceChothListActivity" />
+        <activity android:name=".result.view.activity.ClothBadTypeCountDetailActivity" />
+        <activity android:name=".result.view.activity.ProductListActivity"></activity>
     </application>
 
 </manifest>

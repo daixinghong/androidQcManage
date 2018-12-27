@@ -60,7 +60,7 @@ public class RcyModelListAdapter extends RecyclerView.Adapter<RcyModelListAdapte
 
     @Override
     public int getItemCount() {
-        return mList == null ? 8 : mList.size();
+        return mList == null ? 3 : mList.size();
     }
 
 
