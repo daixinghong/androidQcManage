@@ -2,8 +2,11 @@ package com.sinano;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,10 +22,13 @@ import com.sinano.devices.presenter.CommInterface;
 import com.sinano.devices.presenter.CommPresenter;
 import com.sinano.devices.view.fragment.DevicesManageFragment;
 import com.sinano.devices.view.fragment.SupperCompanyDeviceFragment;
+import com.sinano.receiver.NetBroadcastReceiver;
 import com.sinano.result.view.fragment.CheckResultManageFragment;
 import com.sinano.user.view.activity.UserCenterActivity;
+import com.sinano.user.view.adapter.RcyVersionInfoAdapter;
 import com.sinano.user.view.manage.MyFragment;
 import com.sinano.utils.Constant;
+import com.sinano.utils.DialogUtils;
 import com.sinano.utils.IntentUtils;
 import com.sinano.utils.SpUtils;
 import com.sinano.utils.ToastUtils;
@@ -74,21 +80,34 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     private void init() {
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.setPriority(1000);
+        registerReceiver(new NetBroadcastReceiver(), filter);
+
+
         String userName = (String) SpUtils.getParam(this, Constant.USER_NAME, "");
         mTvUserName.setText(userName);
-        int userId = (int) SpUtils.getParam(this, Constant.USER_ID, 0);
 
         mRdGroup.setOnCheckedChangeListener(this);
-        mRbWork.setChecked(true);
+        mRdMyDevices.setChecked(true);
 
         CommPresenter presenter = new CommPresenter(this);
         presenter.getType();
+
+
 
     }
 
     @Override
     public int getContentView() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(new NetBroadcastReceiver());
     }
 
     @Override
@@ -207,6 +226,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_scan:
+
                 Intent intent = new Intent(MainActivity.this, CustomCaptureActivity.class);
                 startActivityForResult(intent, REQUEST_CODE);
                 break;
