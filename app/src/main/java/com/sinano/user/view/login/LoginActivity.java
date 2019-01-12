@@ -1,5 +1,6 @@
 package com.sinano.user.view.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -173,12 +174,12 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
                 break;
             case R.id.btn_id:
 
-                if (mSocketClient.isOpen()) {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("type", 3);
-                    map.put("id", "02:00:00:00:00:23");
-                    mSocketClient.send(gson.toJson(map));
-                }
+//                if (mSocketClient.isOpen()) {
+//                    Map<String, Object> map = new HashMap<>();
+//                    map.put("type", 3);
+//                    map.put("id", "02:00:00:00:00:23");
+//                    mSocketClient.send(gson.toJson(map));
+//                }
 
                 if (TextUtils.isEmpty(mEtInputUserName.getText().toString().trim())) {
                     ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.user_name_no_empty));
@@ -191,6 +192,7 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
                 }
                 mBtnId.startAnimation();
                 mPresenter.login();
+//                IntentUtils.startActivityAndFinish(this, MainActivity.class);
 
                 break;
         }
@@ -201,11 +203,14 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - exitTime) > 2000) {
-
                 ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.press2finsh));
                 exitTime = System.currentTimeMillis();
             } else {
-                finish();
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+                return true;
             }
             return true;
         }

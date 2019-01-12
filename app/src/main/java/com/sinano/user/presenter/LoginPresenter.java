@@ -15,7 +15,7 @@ public class LoginPresenter {
 
     public void login() {
         Network
-                .getObserableIntence()
+                .getObserableIntenceLogin()
                 .login(mLoginInterface.getUserName(), mLoginInterface.getPassword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
+import com.sinano.base.BaseResultBean;
 import com.sinano.devices.model.ConfigDetailBean;
 import com.sinano.devices.model.ConfigListBean;
 import com.sinano.devices.presenter.ConfigInterface;
@@ -45,13 +46,14 @@ public class ConfigureDetailManageActivity extends BaseActivity implements Confi
     TextView mTvSave;
     @BindView(R.id.tv_current_version)
     TextView mTvCurrentVersion;
-    private String mId = "edf9d2dcb2f44836ab37913b54130f21";
+    private String mId = "47a6f47a693d404f865880af591be7c1";
     private String mTypeId = "4858356422014919a5c053cc492ecf50";
     private String mVersion;
     private List<ConfigDetailBean.DataBean> mList = new ArrayList<>();
     private ConfigVersionListAdapter mAdapter;
     private String mConfigName;
     private String mTime;
+    private ConfigPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +77,11 @@ public class ConfigureDetailManageActivity extends BaseActivity implements Confi
         mTvConfigName.setText(mConfigName);
         mTvCreateTime.setText(mTime);
         mTvTechnologyClassify.setText((String) SpUtils.getParam(this, mTypeId, ""));
-
         mTvTitle.setText(UiUtils.findStringBuId(R.string.configure_version));
+
+        mRlSave.setVisibility(View.VISIBLE);
+        mRlSave.setBackgroundResource(R.drawable.button_shape);
+        mTvSave.setText(UiUtils.findStringBuId(R.string.synchronization));
         LinearLayoutManager manager = new LinearLayoutManager(this) {
             @Override
             public boolean canScrollVertically() {
@@ -88,8 +93,8 @@ public class ConfigureDetailManageActivity extends BaseActivity implements Confi
         mAdapter = new ConfigVersionListAdapter(this, mList);
         mRcyConfigureVersionList.setAdapter(mAdapter);
 
-        ConfigPresenter presenter = new ConfigPresenter(this);
-        presenter.getConfigVersionList(mId);
+        mPresenter = new ConfigPresenter(this);
+        mPresenter.getConfigVersionList(this,mId);
     }
 
     @Override
@@ -97,11 +102,14 @@ public class ConfigureDetailManageActivity extends BaseActivity implements Confi
         return R.layout.activity_configure_detail_manage;
     }
 
-    @OnClick(R.id.rl_back)
+    @OnClick({R.id.rl_back, R.id.rl_save})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_back:
                 finish();
+                break;
+            case R.id.rl_save:
+                mPresenter.synchronizeConfig();
                 break;
         }
 
@@ -130,5 +138,15 @@ public class ConfigureDetailManageActivity extends BaseActivity implements Confi
 
         }
 
+    }
+
+    @Override
+    public void synchronizeConfigSuccess(BaseResultBean baseResultBean) {
+
+    }
+
+    @Override
+    public String getMac() {
+        return null;
     }
 }

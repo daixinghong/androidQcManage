@@ -1,22 +1,16 @@
-package com.busradeniz.detection.utils;
+package com.sinano.utils;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
-import android.view.Gravity;
+import android.view.Display;
 import android.view.View;
-
-import com.busradeniz.detection.R;
-import com.busradeniz.detection.base.BaseApplication;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import top.limuyang2.customldialog.IOSMsgDialog;
-import top.limuyang2.ldialog.LDialog;
-import top.limuyang2.ldialog.base.BaseLDialog;
-import top.limuyang2.ldialog.base.ViewHandlerListener;
-import top.limuyang2.ldialog.base.ViewHolder;
 
 public class DialogUtils {
 
@@ -27,6 +21,7 @@ public class DialogUtils {
     public static List<String> sList = new ArrayList<>();
 
     public static OnClickCallBack mOnClickCallBack;
+    public static Dialog sDialog;
 
     public interface OnClickCallBack {
         void setOnClickCallBack();
@@ -40,101 +35,42 @@ public class DialogUtils {
     public static View inflateView(Context context, int layoutId) {
 
         mContext = context;
-        popLayout = null;
-        if (popLayout == null) {
-            popLayout = View.inflate(context, layoutId, null);
-        }
+        popLayout = View.inflate(context, layoutId, null);
         //【2new构建者设置布局+创建对话框】
 
         return popLayout;
     }
 
-    public static AlertDialog createDialogFour(View view) {
+    public static Dialog createDialogFour(View view) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.dialog);
+        sDialog = new AlertDialog
+                .Builder(mContext)
+                .setView(view)
+                .show();
 
-        dialog = builder.create();
+        sDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        sDialog.setCanceledOnTouchOutside(false);
 
+        Window dialogWindow = sDialog.getWindow();
+        WindowManager m = ((Activity) mContext).getWindowManager();
+        Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+        WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        p.width = (int) (d.getWidth() * 0.7); // 宽度设置为屏幕的0.65
+        dialogWindow.setAttributes(p);
 
-        dialog.setView(view, 0, 0, 0, 0);
+        if (!sDialog.isShowing()) {
+            sDialog.show();
+        }
 
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-
-        return dialog;
-    }
-
-    public static AlertDialog createDialog(View view) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.dialog);
-
-
-        dialog = builder.create();
-
-
-        dialog.setView(view, 0, 0, 0, 0);
-
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-
-        return dialog;
-    }
-
-    public static AlertDialog createDialogNotShow(View view) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.dialog);
-
-
-        dialog = builder.create();
-
-
-        dialog.setView(view, 0, 0, 0, 0);
-
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
-
-        return dialog;
-    }
-
-
-    public static AlertDialog createDialogs(View view) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext, R.style.DialogStyle);
-
-        dialog = builder.create();
-
-        dialog.setView(view, 0, 0, 0, 0);
-
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
-        return dialog;
+        return sDialog;
     }
 
 
     public static void dissDialog() {
-        dialog.dismiss();
+        if (sDialog != null)
+            sDialog.dismiss();
     }
 
-
-    public static void showTopDialog(FragmentManager fragmentManager, int layoutId, final long showTime) {
-        LDialog.Companion.init(fragmentManager).setTag("topTips").setLayoutRes(layoutId)
-                .setGravity(Gravity.TOP)
-                .setWidthScale(1f)
-                .setKeepWidthScale(true)
-                .setAnimStyle(R.style.LDialogHorizontalAnimation)
-                .setViewHandlerListener(new ViewHandlerListener() {
-                    @Override
-                    public void convertView(ViewHolder viewHolder, final BaseLDialog<?> baseLDialog) {
-                        BaseApplication.getHandler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                baseLDialog.dismiss();
-                            }
-                        }, showTime);
-
-                    }
-                }).show();
-    }
 
     private static IosDialogListener mIosDialogListener;
 
@@ -144,26 +80,6 @@ public class DialogUtils {
 
     public static void setOnConfirmClickListener(IosDialogListener iosDialogListener) {
         mIosDialogListener = iosDialogListener;
-    }
-
-    public static void showIosDialog(FragmentManager fragmentManager, String message) {
-        IOSMsgDialog.Companion.init(fragmentManager)
-                .setTitle(UiUtils.getString(R.string.hint))
-                .setAnimStyle(R.style.LDialogScaleAnimation)
-                .setMessage(message)
-                .setNegativeButton(UiUtils.getString(R.string.confirm), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (mIosDialogListener != null)
-                            mIosDialogListener.onConfirmClickListener(view);
-
-                    }
-                }).setPositiveButton(UiUtils.getString(R.string.cancel), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        }).show();
     }
 
 

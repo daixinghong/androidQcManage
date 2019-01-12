@@ -100,7 +100,6 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
         int id = (int) SpUtils.getParam(this, Constant.USER_ID, 0);
         mUserManagePresenter.getUserInfo(id);
 
-
     }
 
     @Override
@@ -185,6 +184,7 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
                 ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.logout_success));
                 SpUtils.putParms(this, Constant.TOKEN, "");
                 IntentUtils.startActivity(this, LoginActivity.class);
+                finish();
                 break;
         }
     }
@@ -228,6 +228,15 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
                 mEtPhone.setText(data.getPhone());
                 mTvCompanyName.setText(data.getCompanyName());
                 mEtNickName.setText(data.getNickname());
+                break;
+            case 405:
+                SpUtils.putParms(this, Constant.TOKEN, "");
+                SpUtils.putParms(this, Constant.USER_NAME, "");
+                SpUtils.putParms(this, Constant.USER_ID, "");
+                SpUtils.putParms(this, Constant.ADMIN, "");
+                IntentUtils.startActivity(this, LoginActivity.class);
+                ToastUtils.showTextToast(userInfoBean.getMsg());
+                finish();
                 break;
             default:
                 ToastUtils.showTextToast(userInfoBean.getMsg());

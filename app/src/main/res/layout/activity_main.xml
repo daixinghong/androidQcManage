@@ -47,7 +47,8 @@
                 android:gravity="center"
                 android:text="@string/home"
                 android:textColor="@drawable/text_color_selector"
-                android:textSize="@dimen/sp_10" />
+                android:textSize="@dimen/sp_10"
+                android:visibility="gone" />
 
             <RadioButton
                 android:id="@+id/rd_my_devices"

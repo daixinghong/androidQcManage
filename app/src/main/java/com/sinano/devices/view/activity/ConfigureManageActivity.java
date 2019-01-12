@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
+import com.sinano.base.BaseResultBean;
 import com.sinano.devices.model.ConfigDetailBean;
 import com.sinano.devices.model.ConfigListBean;
 import com.sinano.devices.presenter.ConfigInterface;
@@ -110,5 +111,15 @@ public class ConfigureManageActivity extends BaseActivity implements ConfigInter
     @Override
     public void getConfigVersionDetailSuccess(ConfigDetailBean configDetailBean) {
 
+    }
+
+    @Override
+    public void synchronizeConfigSuccess(BaseResultBean baseResultBean) {
+
+    }
+
+    @Override
+    public String getMac() {
+        return null;
     }
 }

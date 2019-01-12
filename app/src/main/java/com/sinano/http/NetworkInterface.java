@@ -5,6 +5,9 @@ import com.sinano.devices.model.ConfigDetailBean;
 import com.sinano.devices.model.ConfigListBean;
 import com.sinano.devices.model.DeviceListBean;
 import com.sinano.devices.model.TypeBean;
+import com.sinano.result.model.CheckResultDetailBean;
+import com.sinano.result.model.DeviceResultForConfigBean;
+import com.sinano.result.model.ResultBean;
 import com.sinano.user.model.ChildUserBean;
 import com.sinano.user.model.LoginBean;
 import com.sinano.user.model.UserInfoBean;
@@ -25,11 +28,10 @@ public interface NetworkInterface {
     /**
      * 设备列表
      *
-     * @param map
      * @return
      */
     @GET("device/")
-    Observable<DeviceListBean> devicesList(@QueryMap Map<String, Object> map);
+    Observable<DeviceListBean> devicesList(@Query("id") String id);
 
     /**
      * 模型列表
@@ -70,7 +72,7 @@ public interface NetworkInterface {
      * @return
      */
     @PUT("user")
-    Observable<BaseResultBean> updataUserInfo(@Query("nickname ") String name,@Query("phone") String phone);
+    Observable<BaseResultBean> updataUserInfo(@Query("nickname ") String name, @Query("phone") String phone);
 
     /**
      * 注册
@@ -157,11 +159,10 @@ public interface NetworkInterface {
     /**
      * 同步配置
      *
-     * @param map
      * @return
      */
     @POST("config/synchronize")
-    Observable<DeviceListBean> synchronizeConfig(@QueryMap Map<String, Object> map);
+    Observable<BaseResultBean> synchronizeConfig(@Query("mac") String mac);
 
     /**
      * 配置更新
@@ -181,5 +182,35 @@ public interface NetworkInterface {
     @GET("comm/classification")
     Observable<TypeBean> typeData();
 
+    /**
+     * 获取设备状态列表
+     */
+    @GET("device/online")
+    Observable<DeviceListBean> getDeviceStatusList();
+
+
+    /**
+     * 获取全部检测结果
+     */
+    @GET("cr/count")
+    Observable<ResultBean> getAllCheckResult();
+
+    /**
+     * 根据配置获取设备结果
+     */
+    @GET("cr/count_device/{configId}")
+    Observable<DeviceResultForConfigBean> getCheckResultForConfig(@Path("configId") String id);
+
+    /**
+     * 根据设备查对应的配置
+     */
+    @GET("cr/count_config/{mac}")
+    Observable<DeviceResultForConfigBean> getCheckResultForDevice(@Path("mac") String id);
+
+    /**
+     * 获取检测结果详情
+     */
+    @GET("cr")
+    Observable<CheckResultDetailBean> getCheckResultDetail(@QueryMap Map<String, Object> map);
 
 }

@@ -1,6 +1,7 @@
 package com.sinano.devices.presenter;
 
 import com.sinano.base.BaseInterface;
+import com.sinano.base.BaseResultBean;
 import com.sinano.devices.model.ConfigDetailBean;
 import com.sinano.devices.model.ConfigListBean;
 
@@ -13,5 +14,9 @@ public interface ConfigInterface extends BaseInterface {
     void getConfigListDataSuccess(ConfigListBean configListBean);
 
     void getConfigVersionDetailSuccess(ConfigDetailBean configDetailBean);
+
+    void synchronizeConfigSuccess(BaseResultBean baseResultBean);
+
+    String getMac();
 
 }

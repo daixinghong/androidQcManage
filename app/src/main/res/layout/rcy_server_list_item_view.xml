@@ -19,10 +19,12 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/iv_server"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/dp_3"
+                android:layout_marginBottom="@dimen/dp_3"
+                android:layout_marginTop="@dimen/dp_5"
                 android:src="@mipmap/server" />
 
             <TextView
@@ -31,7 +33,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center_horizontal"
-                android:text="ZJ-01" />
+                android:layout_marginBottom="@dimen/dp_3"
+                android:textColor="@color/color_242525"
+                android:textSize="@dimen/sp_15" />
 
         </LinearLayout>
 
@@ -43,22 +47,11 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
+
                 android:id="@+id/rcy_terminal_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
-
-            <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:src="@mipmap/terminal" />-->
-            <!---->
-            <!--<TextView-->
-            <!--android:id="@+id/tv_check_type"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:text="半成品" />-->
 
         </LinearLayout>
 

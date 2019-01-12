@@ -6,12 +6,21 @@ public class DeviceListBean {
 
 
     /**
-     * data : {"records":[{"id":"853b75c972b64612b33460a0f6b46f61","deviceNo":"D002","deviceName":"Device2","supplier":"阿里巴巴","bind":"-","del":false,"createTime":"2018-12-11 09:22:28"},{"id":"f9682f30101e44acb3f89a7a3f283ebb","deviceNo":"D001","deviceName":"设备1","supplier":"腾讯公司","bind":"-","del":false,"createTime":"2018-12-07 11:16:24"}],"total":2,"size":10,"current":1,"searchCount":true,"pages":1}
+     * data : {"server":[{"id":"9491b59992524559a6cb69339012dae5","mac":"00:01:6C:06:A6:15","serverNo":"Server002","serverName":"服务器2号","phoneDevice":[]},{"id":"c5bb59056a074868993da6f9689dc8b2","mac":"00:01:6C:06:A6:12","serverNo":"Server001","serverName":"服务器1号","phoneDevice":[{"id":"49a0cd11e03f4361b7ccdd5aebdc9c18","mac":"00:01:6C:06:A6:25","deviceNo":"DEVICE001","deviceName":"扫描仪","online":false},{"id":"4af87402fe8e4377990eef805a787550","mac":"00:01:6C:06:A6:12","deviceNo":"DEVICE002","deviceName":"设备2","online":false},{"id":"4af87402fe8e4377990eef805a787551","mac":"00:01:6C:06:A6:13","deviceNo":"DEVICE003","deviceName":"设备3","online":false}]}],"clothDevice":[]}
      * code : 200
      */
 
     private DataBean data;
     private int code;
+    private String msg;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
 
     public DataBean getData() {
         return data;
@@ -30,88 +39,48 @@ public class DeviceListBean {
     }
 
     public static class DataBean {
-        /**
-         * records : [{"id":"853b75c972b64612b33460a0f6b46f61","deviceNo":"D002","deviceName":"Device2","supplier":"阿里巴巴","bind":"-","del":false,"createTime":"2018-12-11 09:22:28"},{"id":"f9682f30101e44acb3f89a7a3f283ebb","deviceNo":"D001","deviceName":"设备1","supplier":"腾讯公司","bind":"-","del":false,"createTime":"2018-12-07 11:16:24"}]
-         * total : 2
-         * size : 10
-         * current : 1
-         * searchCount : true
-         * pages : 1
-         */
+        private List<ServerBean> server;
+        private List<?> clothDevice;
 
-        private int total;
-        private int size;
-        private int current;
-        private boolean searchCount;
-        private int pages;
-        private List<RecordsBean> records;
-
-        public int getTotal() {
-            return total;
+        public List<ServerBean> getServer() {
+            return server;
         }
 
-        public void setTotal(int total) {
-            this.total = total;
+        public void setServer(List<ServerBean> server) {
+            this.server = server;
         }
 
-        public int getSize() {
-            return size;
+        public List<?> getClothDevice() {
+            return clothDevice;
         }
 
-        public void setSize(int size) {
-            this.size = size;
+        public void setClothDevice(List<?> clothDevice) {
+            this.clothDevice = clothDevice;
         }
 
-        public int getCurrent() {
-            return current;
-        }
-
-        public void setCurrent(int current) {
-            this.current = current;
-        }
-
-        public boolean isSearchCount() {
-            return searchCount;
-        }
-
-        public void setSearchCount(boolean searchCount) {
-            this.searchCount = searchCount;
-        }
-
-        public int getPages() {
-            return pages;
-        }
-
-        public void setPages(int pages) {
-            this.pages = pages;
-        }
-
-        public List<RecordsBean> getRecords() {
-            return records;
-        }
-
-        public void setRecords(List<RecordsBean> records) {
-            this.records = records;
-        }
-
-        public static class RecordsBean {
+        public static class ServerBean {
             /**
-             * id : 853b75c972b64612b33460a0f6b46f61
-             * deviceNo : D002
-             * deviceName : Device2
-             * supplier : 阿里巴巴
-             * bind : -
-             * del : false
-             * createTime : 2018-12-11 09:22:28
+             * id : 9491b59992524559a6cb69339012dae5
+             * mac : 00:01:6C:06:A6:15
+             * serverNo : Server002
+             * serverName : 服务器2号
+             * phoneDevice : []
              */
 
             private String id;
-            private String deviceNo;
-            private String deviceName;
-            private String supplier;
-            private String bind;
-            private boolean del;
-            private String createTime;
+            private String mac;
+            private String serverNo;
+            private String serverName;
+            private boolean online;
+            private List<PhoneBeanDevices> phoneDevice;
+
+            public boolean isOnline() {
+                return online;
+            }
+
+            public void setOnline(boolean online) {
+                this.online = online;
+            }
 
             public String getId() {
                 return id;
@@ -119,6 +88,71 @@ public class DeviceListBean {
 
             public void setId(String id) {
                 this.id = id;
+            }
+
+            public String getMac() {
+                return mac;
+            }
+
+            public void setMac(String mac) {
+                this.mac = mac;
+            }
+
+            public String getServerNo() {
+                return serverNo;
+            }
+
+            public void setServerNo(String serverNo) {
+                this.serverNo = serverNo;
+            }
+
+            public String getServerName() {
+                return serverName;
+            }
+
+            public void setServerName(String serverName) {
+                this.serverName = serverName;
+            }
+
+            public List<PhoneBeanDevices> getPhoneDevice() {
+                return phoneDevice;
+            }
+
+            public void setPhoneDevice(List<PhoneBeanDevices> phoneDevice) {
+                this.phoneDevice = phoneDevice;
+            }
+        }
+
+        public class PhoneBeanDevices {
+
+            /**
+             * id : 4af87402fe8e4377990eef805a787550
+             * mac : 00:01:6C:06:A6:12
+             * deviceNo : DEVICE002
+             * deviceName : 设备2
+             * online : false
+             */
+
+            private String id;
+            private String mac;
+            private String deviceNo;
+            private String deviceName;
+            private boolean online;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getMac() {
+                return mac;
+            }
+
+            public void setMac(String mac) {
+                this.mac = mac;
             }
 
             public String getDeviceNo() {
@@ -137,36 +171,12 @@ public class DeviceListBean {
                 this.deviceName = deviceName;
             }
 
-            public String getSupplier() {
-                return supplier;
+            public boolean isOnline() {
+                return online;
             }
 
-            public void setSupplier(String supplier) {
-                this.supplier = supplier;
-            }
-
-            public String getBind() {
-                return bind;
-            }
-
-            public void setBind(String bind) {
-                this.bind = bind;
-            }
-
-            public boolean isDel() {
-                return del;
-            }
-
-            public void setDel(boolean del) {
-                this.del = del;
-            }
-
-            public String getCreateTime() {
-                return createTime;
-            }
-
-            public void setCreateTime(String createTime) {
-                this.createTime = createTime;
+            public void setOnline(boolean online) {
+                this.online = online;
             }
         }
     }

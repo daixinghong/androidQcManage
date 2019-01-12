@@ -14,11 +14,14 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
-import com.sinano.devices.model.ChartDevicesBean;
+import com.sinano.result.model.ClothContentBean;
+import com.sinano.utils.Constant;
 import com.sinano.utils.UiUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,7 +34,8 @@ public class ClothBadTypeCountDetailActivity extends BaseActivity {
     TextView mTvTitle;
     @BindView(R.id.pic_chart)
     PieChart mPicChart;
-    private List<ChartDevicesBean> mList = new ArrayList<>();
+    private List<ClothContentBean.BadInfoBean> mList = new ArrayList<>();
+    private Map<Integer, List<ClothContentBean.BadInfoBean>> mStringMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +45,16 @@ public class ClothBadTypeCountDetailActivity extends BaseActivity {
     }
 
     private void init() {
-        mTvTitle.setText(UiUtils.findStringBuId(R.string.bad_cloth_detail));
 
+        Bundle bundleExtra = getIntent().getBundleExtra(Constant.BUNDLE_PARMS);
+
+        if (bundleExtra != null) {
+            ArrayList<ClothContentBean.BadInfoBean> list = (ArrayList<ClothContentBean.BadInfoBean>) bundleExtra.getSerializable("data");
+            mList.clear();
+            mList.addAll(list);
+        }
+
+        mTvTitle.setText(UiUtils.findStringBuId(R.string.bad_cloth_detail));
 
         Description description = new Description();
         description.setText("");
@@ -57,23 +69,27 @@ public class ClothBadTypeCountDetailActivity extends BaseActivity {
 
         List<PieEntry> listPie = new ArrayList<>();
 
-        int counts = 0;
-        for (int i = 1; i < 6; i++) {
-            ChartDevicesBean chartDevicesBean = new ChartDevicesBean();
-            chartDevicesBean.setName("水墨" + i);
-            counts += i * 20;
-            chartDevicesBean.setCount(i * 20);
-            mList.add(chartDevicesBean);
-        }
-
+        int counts = mList.size();
 
         for (int i = 0; i < mList.size(); i++) {
-            double qty = mList.get(i).getCount();
+            int type = mList.get(i).getType();
+            if (mStringMap.get(type) == null) {
+                List<ClothContentBean.BadInfoBean> list = new ArrayList<>();
+                list.add(mList.get(i));
+                mStringMap.put(type, list);
+            } else {
+                mStringMap.get(type).add(mList.get(i));
+            }
+        }
+
+        for (List<ClothContentBean.BadInfoBean> v : mStringMap.values()) {
+            double qty = v.size();
             float number = (float) (qty / counts);
             float count = (number * 100);
-            PieEntry pieEntry = new PieEntry(count, mList.get(i).getName() + "( " + ((int) qty) + " )");
+            PieEntry pieEntry = new PieEntry(count, v.get(0).getDesc() + "( " + ((int) qty) + " )");
             listPie.add(pieEntry);
         }
+
         setData(listPie);
 
     }

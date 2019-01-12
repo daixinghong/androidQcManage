@@ -6,7 +6,9 @@ public interface Constant {
 
     String COMM = "http://120.79.15.200:2048/";
 
-    String BUNDLE_PARMS = "bundle";
+    String IMAGE_URL = "http://120.79.15.200/files/";
+
+    String BUNDLE_PARMS = "bundleParms";
 
     String KEY = "key";
 
@@ -14,7 +16,7 @@ public interface Constant {
 
     String TYPE_ID = "typeID";
 
-    String VERSION=  "version";
+    String VERSION = "version";
 
     String NAME = "name";
 
@@ -29,7 +31,6 @@ public interface Constant {
     String USER = "user";
 
     String ADMIN = "admin";
-
 
 
 }

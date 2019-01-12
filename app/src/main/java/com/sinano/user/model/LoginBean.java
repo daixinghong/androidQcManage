@@ -46,7 +46,6 @@ public class LoginBean {
          * createTime : 2018-12-22 10:02:47
          * token : 986dfbbbd3d740ec825655b6d8153592
          */
-
         private int uid;
         private String username;
         private String nickname;

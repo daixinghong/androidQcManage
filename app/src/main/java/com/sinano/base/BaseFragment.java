@@ -4,27 +4,31 @@ package com.sinano.base;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.data.BarDataSet;
+import com.sinano.receiver.NetBroadcastReceiver;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
-
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements NetBroadcastReceiver.NetEvevt {
 
 
-    private Unbinder mBind;
+    public final String TAG = "sinano";
+    public static NetBroadcastReceiver.NetEvevt evevt;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        evevt = this;
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View contentView = getContentView();
-
-        mBind = ButterKnife.bind(this, contentView);
 
         return contentView;
     }
@@ -35,7 +39,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mBind.unbind();
     }
 
     public void initBarDataSet(BarDataSet barDataSet, int color) {
@@ -46,4 +49,13 @@ public abstract class BaseFragment extends Fragment {
         barDataSet.setValueTextSize(11f);
     }
 
+    public void getDataError(Throwable throwable) {
+
+        Log.e(TAG, "getDataError: " + throwable.getMessage());
+    }
+
+    @Override
+    public void onNetChange(int netMobile) {
+
+    }
 }

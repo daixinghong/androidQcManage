@@ -1,5 +1,7 @@
 package com.sinano;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -40,7 +42,7 @@ public class StartAppActivity extends BaseActivity {
     private void init() {
 
         AlphaAnimation anima = new AlphaAnimation(0.3f, 1.0f);
-        anima.setDuration(1000);// 设置动画显示时间
+        anima.setDuration(2000);// 设置动画显示时间
         mRelativeLayout.startAnimation(anima);
 
         anima.setAnimationListener(new Animation.AnimationListener() {
@@ -56,6 +58,7 @@ public class StartAppActivity extends BaseActivity {
                     pi = pm.getPackageInfo(getPackageName(), PackageManager.GET_PERMISSIONS);
                     String[] permissions = pi.requestedPermissions;
                     ActivityCompat.requestPermissions(StartAppActivity.this, permissions, REQUEST_CODE);
+//                    requestPermission();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -75,7 +78,7 @@ public class StartAppActivity extends BaseActivity {
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CODE: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                     if (TextUtils.isEmpty((String) SpUtils.getParam(this, Constant.TOKEN, ""))) {
                         IntentUtils.startActivity(StartAppActivity.this, LoginActivity.class);
                     } else {
@@ -84,12 +87,26 @@ public class StartAppActivity extends BaseActivity {
                     finish();
 
                 } else {
-                    System.exit(0);
+                    showWaringDialog();
                 }
                 return;
             }
         }
     }
+
+
+    private void showWaringDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("警告！")
+                .setMessage("请前往设置->应用->sinano->权限中打开相关权限，否则功能无法正常运行！")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).show();
+    }
+
 
 
 }

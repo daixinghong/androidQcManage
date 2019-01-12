@@ -1,4 +1,24 @@
 package com.sinano.result.presenter;
 
-public class ResultInterface {
+import com.sinano.base.BaseInterface;
+import com.sinano.result.model.CheckResultDetailBean;
+import com.sinano.result.model.DeviceResultForConfigBean;
+import com.sinano.result.model.ResultBean;
+
+import java.util.Map;
+
+public interface ResultInterface extends BaseInterface {
+
+    void getResultSuccess(ResultBean resultBean);
+
+    void getResultForConfigSuccess(DeviceResultForConfigBean resultBean);
+
+    void getResultForDeviceSuccess(DeviceResultForConfigBean resultBean);
+
+    void getCheckResultDetailSuccess(CheckResultDetailBean checkResultDetailBean);
+
+    String getConfigId();
+
+    Map<String,Object> getParms();
+
 }

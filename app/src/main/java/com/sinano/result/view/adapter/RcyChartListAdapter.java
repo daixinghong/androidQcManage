@@ -4,10 +4,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -20,9 +20,10 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.sinano.R;
-import com.sinano.devices.model.ChartDevicesBean;
+import com.sinano.result.model.DeviceResultForConfigBean;
 import com.sinano.result.view.activity.ProductListActivity;
 import com.sinano.utils.IntentUtils;
+import com.sinano.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,11 @@ public class RcyChartListAdapter extends RecyclerView.Adapter<RcyChartListAdapte
 
 
     private Context mContext;
-    private List<String> mList;
+    private List<DeviceResultForConfigBean.DataBean> mList;
     private OnItemClickListener mOnItemClickListener;
+    private boolean mStatus;
+    private String mMac;
+    private String mConfigId;
 
     public interface OnItemClickListener {
         void setOnItemClickListener(View view, int position);
@@ -42,9 +46,12 @@ public class RcyChartListAdapter extends RecyclerView.Adapter<RcyChartListAdapte
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public RcyChartListAdapter(Context context, List<String> list) {
+    public RcyChartListAdapter(Context context, List<DeviceResultForConfigBean.DataBean> list, boolean status, String mac, String configId) {
         this.mContext = context;
         this.mList = list;
+        this.mStatus = status;
+        this.mMac = mac;
+        this.mConfigId = configId;
 
     }
 
@@ -60,29 +67,34 @@ public class RcyChartListAdapter extends RecyclerView.Adapter<RcyChartListAdapte
     public void onBindViewHolder(ChartHolder holder, final int position) {
 
         holder.setIsRecyclable(false);
+
+        if (mStatus) {
+            holder.mTvTitle.setText(UiUtils.findStringBuId(R.string.config_name));
+            holder.mTvName.setText(mList.get(position).getConfig_name());
+        } else {
+            holder.mTvTitle.setText(UiUtils.findStringBuId(R.string.device_seq));
+            holder.mTvName.setText(mList.get(position).getDevice_name());
+        }
+
         List<PieEntry> listPie = new ArrayList<>();
-        List<ChartDevicesBean> mLists = new ArrayList<>();
 
         int counts = 0;
-        for (int i = 1; i < 3; i++) {
-            ChartDevicesBean chartDevicesBean = new ChartDevicesBean();
-            if (i == 1) {
-                chartDevicesBean.setName("不良品");
-            } else {
-                chartDevicesBean.setName("良品");
-            }
-            counts += i * 200;
-            chartDevicesBean.setCount(i * 200);
-            mLists.add(chartDevicesBean);
-        }
+        counts = mList.get(position).getNo() + mList.get(position).getYes();
 
-        for (int i = 0; i < mLists.size(); i++) {
-            double qty = mLists.get(i).getCount();
-            float number = (float) (qty / counts);
-            float count = (number * 100);
-            PieEntry pieEntry = new PieEntry(count, mLists.get(i).getName() + "( " + ((int) qty) + " )", position);
-            listPie.add(pieEntry);
-        }
+
+        double qty = mList.get(position).getYes();
+        float number = (float) (qty / counts);
+        float count = (number * 100);
+        PieEntry pieEntry = new PieEntry(count, "良品( " + ((int) qty) + " )", position);
+        listPie.add(pieEntry);
+
+        double qty1 = mList.get(position).getNo();
+        float number1 = (float) (qty1 / counts);
+        float count1 = (number1 * 100);
+
+        PieEntry pieEntry1 = new PieEntry(count1, "不良品( " + ((int) qty1) + " )", position);
+        listPie.add(pieEntry1);
+
         setData(listPie, holder);
 
         holder.mPieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -90,8 +102,17 @@ public class RcyChartListAdapter extends RecyclerView.Adapter<RcyChartListAdapte
             public void onValueSelected(Entry e, Highlight h) {
 
                 Bundle bundle = new Bundle();
+                if (mMac == null) {
+                    bundle.putString("mac", mList.get((int) e.getData()).getMac());
+                } else {
+                    bundle.putString("mac", mMac);
+                }
+                if (mConfigId == null) {
+                    bundle.putString("configId", mList.get((int) e.getData()).getConfig_id());
+                } else {
+                    bundle.putString("configId", mConfigId);
+                }
                 IntentUtils.startActivityForParms(mContext, ProductListActivity.class, bundle);
-                Log.e("vivi", "onValueSelected: " + e.getData());
             }
 
             @Override
@@ -115,11 +136,8 @@ public class RcyChartListAdapter extends RecyclerView.Adapter<RcyChartListAdapte
 
         //数据和颜色
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(mContext.getResources().getColor(R.color.color_F97319));
         colors.add(mContext.getResources().getColor(R.color.color_9BD504));
-        colors.add(mContext.getResources().getColor(R.color.color_OBCA4E));
         colors.add(mContext.getResources().getColor(R.color.color_F45637));
-        colors.add(mContext.getResources().getColor(R.color.color_34BCC6));
 
         dataSet.setColors(colors);
         PieData data = new PieData(dataSet);
@@ -137,6 +155,8 @@ public class RcyChartListAdapter extends RecyclerView.Adapter<RcyChartListAdapte
 
         private OnItemClickListener mOnItemClickListener;
         private final PieChart mPieChart;
+        private final TextView mTvTitle;
+        private final TextView mTvName;
 
         public ChartHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
@@ -153,6 +173,8 @@ public class RcyChartListAdapter extends RecyclerView.Adapter<RcyChartListAdapte
             l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
             mPieChart.setTransparentCircleRadius(0f);
             mPieChart.setDrawEntryLabels(false);
+            mTvTitle = itemView.findViewById(R.id.tv_titles);
+            mTvName = itemView.findViewById(R.id.tv_name);
 
 
             this.mOnItemClickListener = onItemClickListener;

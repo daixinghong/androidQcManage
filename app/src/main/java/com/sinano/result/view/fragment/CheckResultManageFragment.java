@@ -28,28 +28,35 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.sinano.R;
 import com.sinano.base.BaseFragment;
-import com.sinano.devices.model.ChartDevicesBean;
+import com.sinano.devices.view.activity.DeviceResultForConfigActivity;
+import com.sinano.result.model.ChartDataBean;
+import com.sinano.result.model.CheckResultDetailBean;
+import com.sinano.result.model.DeviceResultForConfigBean;
+import com.sinano.result.model.ResultBean;
+import com.sinano.result.presenter.ResultInterface;
+import com.sinano.result.presenter.ResultPresenter;
+import com.sinano.result.view.activity.DeviceChothListActivity;
 import com.sinano.result.view.activity.TerminalResultDetailActivity;
 import com.sinano.result.view.adapter.RcyCheckResultAdapter;
 import com.sinano.result.view.adapter.RcyTerminalListAdapter;
 import com.sinano.utils.IntentUtils;
+import com.sinano.utils.ToastUtils;
 import com.sinano.utils.UiUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-public class CheckResultManageFragment extends BaseFragment implements RcyTerminalListAdapter.OnItemClickListener, View.OnClickListener {
+public class CheckResultManageFragment extends BaseFragment implements RcyTerminalListAdapter.OnItemClickListener, View.OnClickListener, ResultInterface {
 
     private TextView mTvAllCount;
-    private TextView mTvType;
-    private TextView mTvProjectCount;
     private RecyclerView mRcyProjectList;
     private RcyCheckResultAdapter mAdapter;
     private RecyclerView mRcyDeviceList;
     private RcyTerminalListAdapter mTerminalListAdapter;
-    private TextView mTvServerCount;
     private BarChart mBarChart;
     private List<XAxis> mXAxisList = new ArrayList<>();
     private YAxis leftAxis;
@@ -67,6 +74,30 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
     private RelativeLayout mRlDeviceUpPage;
     private RelativeLayout mRlDeviceNextPage;
     private TextView mTvDevicePage;
+    private TextView mTvDeviceCount;
+    private TextView mTvGoodCount;
+    private TextView mTvBadCount;
+
+    private List<ResultBean.DataBean.ConfigBean> mConfigList = new ArrayList<>();
+    private List<ResultBean.DataBean.DeviceBean> mDeviceList = new ArrayList<>();
+
+    private Map<Integer, List<ChartDataBean>> mPageConfigNameMap = new HashMap<>();
+    private Map<Integer, LinkedHashMap<String, List<Float>>> mPageConfigLinkMap = new HashMap<>();
+
+    private Map<Integer, List<ChartDataBean>> mPageDeviceNameMap = new HashMap<>();
+    private Map<Integer, LinkedHashMap<String, List<Float>>> mPageDeviceLinkMap = new HashMap<>();
+
+    private List<Integer> colors = Arrays.asList(
+            UiUtils.findColorBuId(R.color.color_12507E), UiUtils.findColorBuId(R.color.clolor_CDC18D)
+    );
+
+    private int mConfigPageIndex;
+    private int mDevicePageIndex;
+    private int mapIndex;
+    private int deviceMapIndex;
+    private ResultPresenter mPresenter;
+    private String mConfigId;
+
 
     @Override
     public View getContentView() {
@@ -95,7 +126,11 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
             @Override
             public void onValueSelected(Entry e, Highlight h) {
 
-                Log.e("daixinhong", "onValueSelected: " + e.getData());
+                mConfigId = ((ChartDataBean) e.getData()).getConfigId();
+                Bundle bundle = new Bundle();
+                bundle.putString("configId", mConfigId);
+                IntentUtils.startActivityForParms(getActivity(), DeviceResultForConfigActivity.class, bundle);
+
             }
 
             @Override
@@ -108,11 +143,20 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
             @Override
             public void onValueSelected(Entry e, Highlight h) {
 
+                String mac = ((ChartDataBean) e.getData()).getConfigId();
+                String type = ((ChartDataBean) e.getData()).getType();
                 Bundle bundle = new Bundle();
-                IntentUtils.startActivityForParms(getActivity(), TerminalResultDetailActivity.class, bundle);
+                bundle.putString("mac", mac);
 
-//                Bundle bundle = new Bundle();
-//                IntentUtils.startActivityForParms(getActivity(), DeviceChothListActivity.class, bundle);
+                if (type == null) {
+                    IntentUtils.startActivityForParms(getActivity(), TerminalResultDetailActivity.class, bundle);
+                    return;
+                }
+                if (type.equals("phone")) {
+                    IntentUtils.startActivityForParms(getActivity(), TerminalResultDetailActivity.class, bundle);
+                } else {
+                    IntentUtils.startActivityForParms(getActivity(), DeviceChothListActivity.class, bundle);
+                }
 
             }
 
@@ -132,53 +176,20 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
         mTerminalListAdapter = new RcyTerminalListAdapter(getActivity(), null);
         mRcyDeviceList.setAdapter(mTerminalListAdapter);
 
-        List<Integer> colors = Arrays.asList(
-                UiUtils.findColorBuId(R.color.color_12507E), UiUtils.findColorBuId(R.color.clolor_CDC18D)
-        );
 
-        List<String> xValues = new ArrayList<>();
-        List<Float> yValue1 = new ArrayList<>();
-        List<Float> yValue2 = new ArrayList<>();
+        initBarChart(mBarChart);
+        initBarChart(mDeviceChart);
 
-        List<ChartDevicesBean> valueList = new ArrayList<>();
-
-        for (int i = 0; i < 6; i++) {
-            ChartDevicesBean chartDevicesBean = new ChartDevicesBean();
-            chartDevicesBean.setCount((i + 1) * 100);
-            chartDevicesBean.setName("ip" + (4 + i));
-            valueList.add(chartDevicesBean);
-        }
-        List<ChartDevicesBean> avgValueList = new ArrayList<>();
-
-        for (int i = 0; i < 6; i++) {
-            ChartDevicesBean chartDevicesBean = new ChartDevicesBean();
-            chartDevicesBean.setCount((i + 1) * 3);
-            avgValueList.add(chartDevicesBean);
-        }
-
-        for (ChartDevicesBean valueBean : valueList) {
-            xValues.add(valueBean.getName());
-            yValue1.add((float) valueBean.getCount());
-        }
-        for (ChartDevicesBean valueAvgBean : avgValueList) {
-            yValue2.add((float) valueAvgBean.getCount());
-        }
-        chartDataMap.put(UiUtils.findStringBuId(R.string.good_product_count), yValue1);
-        chartDataMap.put(UiUtils.findStringBuId(R.string.bad_product_count), yValue2);
-
-        showBarChart(mBarChart, xValues, chartDataMap, colors, 0);
-
-        showBarChart(mDeviceChart, xValues, chartDataMap, colors, 1);
-
-        showBarChart(mChartResultPart, xValues, chartDataMap, colors, 2);
+        mPresenter = new ResultPresenter(this);
+        mPresenter.getAllCheckResult(getActivity());
 
     }
 
     private void initView(View view) {
 
-        mTvProjectCount = view.findViewById(R.id.tv_terminal_count);
-        mTvServerCount = view.findViewById(R.id.tv_server_count);
-        mTvType = view.findViewById(R.id.tv_type);
+        mTvDeviceCount = view.findViewById(R.id.tv_device_count);
+        mTvGoodCount = view.findViewById(R.id.tv_good_count);
+        mTvBadCount = view.findViewById(R.id.tv_bad_count);
         mTvAllCount = view.findViewById(R.id.tv_all_count);
         mRcyProjectList = view.findViewById(R.id.rcy_project_list);
         mRcyDeviceList = view.findViewById(R.id.rcy_device_list);
@@ -199,12 +210,6 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
         mRlPartUpPage.setVisibility(View.VISIBLE);
         mRlProjectUpPage.setVisibility(View.VISIBLE);
 
-
-        initBarChart(mBarChart);
-
-        initBarChart(mDeviceChart);
-
-        initBarChart(mChartResultPart);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4) {
             @Override
@@ -242,14 +247,14 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
 
         //不显示图表网格
         barChart.setDrawGridBackground(false);
+
         //背景阴影
         barChart.setDrawBarShadow(false);
         barChart.setHighlightFullBarEnabled(false);
         //显示边框
         barChart.setDrawBorders(false);
         //设置动画效果
-        barChart.animateY(1000, Easing.EasingOption.Linear);
-        barChart.animateX(1000, Easing.EasingOption.Linear);
+
 
         /***XY轴的设置***/
         //X轴设置显示位置在底部
@@ -285,7 +290,6 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
         barChart.setScaleEnabled(false);
         //禁止所有事件
         barChart.setTouchEnabled(true);
-
     }
 
     /**
@@ -294,8 +298,8 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
      *                  key对应柱状图名字  List<Float> 对应每类柱状图的Y值
      * @param colors
      */
-    public void showBarChart(BarChart barChart, final List<String> xValues, LinkedHashMap<String, List<Float>> dataLists,
-                             @ColorRes List<Integer> colors, int index) {
+    public void showBarChart(BarChart barChart, final List<ChartDataBean> xValues, LinkedHashMap<String, List<Float>> dataLists,
+                             @ColorRes List<Integer> colors, int index) throws Exception {
 
         List<IBarDataSet> dataSets = new ArrayList<>();
         int currentPosition = 0;//用于柱状图颜色集合的index
@@ -311,6 +315,7 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
             }
             // 每一个BarDataSet代表一类柱状图
             BarDataSet barDataSet = new BarDataSet(entries, name);
+
             initBarDataSet(barDataSet, colors.get(currentPosition));
             dataSets.add(barDataSet);
 
@@ -321,7 +326,7 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
         mXAxisList.get(index).setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return xValues.get((int) value % xValues.size());
+                return xValues.get((int) value % xValues.size()).getName();
             }
         });
         //右侧Y轴自定义值
@@ -333,31 +338,256 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
         });
 
         BarData data = new BarData(dataSets);
+
+        //设置柱状图宽度
+        data.setBarWidth(0.5f);
+
         barChart.setData(data);
+        barChart.invalidate();
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.rl_part_up_page:
+        try {
+            switch (view.getId()) {
+                case R.id.rl_part_up_page:
 
-                break;
-            case R.id.rl_part_next_page:
+                    break;
+                case R.id.rl_part_next_page:
 
-                break;
-            case R.id.rl_project_up_page:
+                    break;
+                case R.id.rl_project_up_page:
+                    if (mConfigPageIndex == 0) {
+                        ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.is_first_page));
+                        return;
+                    } else {
+                        mConfigPageIndex--;
+                        showBarChart(mBarChart, mPageConfigNameMap.get(mConfigPageIndex), mPageConfigLinkMap.get(mConfigPageIndex), colors, 0);
+                        mTvProjectPage.setText(mConfigPageIndex + 1 + "/" + mPageConfigLinkMap.size());
+                    }
 
-                break;
-            case R.id.rl_project_next_page:
+                    break;
+                case R.id.rl_project_next_page:
+                    if (mConfigPageIndex == mPageConfigLinkMap.size() - 1) {
+                        ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.is_last_page));
+                        return;
+                    } else {
+                        mConfigPageIndex++;
+                        showBarChart(mBarChart, mPageConfigNameMap.get(mConfigPageIndex), mPageConfigLinkMap.get(mConfigPageIndex), colors, 0);
+                        mTvProjectPage.setText(mConfigPageIndex + 1 + "/" + mPageConfigLinkMap.size());
+                    }
 
-                break;
-            case R.id.rl_device_up_page:
+                    break;
+                case R.id.rl_device_up_page:
+                    if (mDevicePageIndex == 0) {
+                        ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.is_first_page));
+                        return;
+                    } else {
+                        mDevicePageIndex--;
+                        showBarChart(mDeviceChart, mPageDeviceNameMap.get(mDevicePageIndex), mPageDeviceLinkMap.get(mDevicePageIndex), colors, 1);
+                        mTvDevicePage.setText(mDevicePageIndex + 1 + "/" + mPageDeviceNameMap.size());
+                    }
 
-                break;
-            case R.id.rl_device_next_page:
+                    break;
+                case R.id.rl_device_next_page:
+                    if (mDevicePageIndex == mPageDeviceNameMap.size() - 1) {
+                        ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.is_last_page));
+                        return;
+                    } else {
+                        mDevicePageIndex++;
+                        showBarChart(mDeviceChart, mPageDeviceNameMap.get(mDevicePageIndex), mPageDeviceLinkMap.get(mDevicePageIndex), colors, 1);
+                        mTvDevicePage.setText(mDevicePageIndex + 1 + "/" + mPageDeviceNameMap.size());
 
-                break;
+                    }
+                    break;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "onClick: ");
         }
 
+
     }
+
+    @Override
+    public void getResultSuccess(ResultBean resultBean) {
+
+        switch (resultBean.getCode()) {
+            case 200:
+
+                long l = System.currentTimeMillis();
+
+                Log.e(TAG, "getResultSuccess: " + l);
+
+                ResultBean.DataBean data = resultBean.getData();
+                List<ResultBean.DataBean.ConfigBean> config = data.getConfig();
+                List<ResultBean.DataBean.DeviceBean> device = data.getDevice();
+                mConfigList.clear();
+                mConfigList.addAll(config);
+
+                mDeviceList.clear();
+                mDeviceList.addAll(device);
+
+                mBarChart.animateY(1000, Easing.EasingOption.Linear);
+                mBarChart.animateX(1000, Easing.EasingOption.Linear);
+
+                mDeviceChart.animateY(1000, Easing.EasingOption.Linear);
+                mDeviceChart.animateX(1000, Easing.EasingOption.Linear);
+
+                int goodCount = 0;
+                int badCount = 0;
+
+                List<ChartDataBean> xValues = new ArrayList<>();
+                List<Float> yValue1 = new ArrayList<>();
+                List<Float> yValue2 = new ArrayList<>();
+
+                int configIndex = 0;
+                mapIndex = 0;
+                for (int i = 0; i < mConfigList.size(); i++) {
+                    goodCount += mConfigList.get(i).getYes();
+                    badCount += mConfigList.get(i).getNo();
+                    ChartDataBean chartDataBean = new ChartDataBean();
+                    chartDataBean.setName(mConfigList.get(i).getName());
+                    chartDataBean.setConfigId(mConfigList.get(i).getCid());
+                    xValues.add(chartDataBean);
+                    yValue1.add((float) mConfigList.get(i).getYes());
+                    yValue2.add((float) mConfigList.get(i).getNo());
+
+                    if (i == mConfigList.size() - 1 && i < 5) {
+                        LinkedHashMap<String, List<Float>> mConfigDataMap = new LinkedHashMap<>();
+                        mPageConfigNameMap.put(mapIndex, xValues);
+                        mConfigDataMap.put(UiUtils.findStringBuId(R.string.good_product_count), yValue1);
+                        mConfigDataMap.put(UiUtils.findStringBuId(R.string.bad_product_count), yValue2);
+                        mPageConfigLinkMap.put(mapIndex, mConfigDataMap);
+                        break;
+                    }
+
+                    configIndex++;
+                    if (configIndex == 5 || i == mConfigList.size() - 1) {
+                        LinkedHashMap<String, List<Float>> mConfigDataMap = new LinkedHashMap<>();
+                        mPageConfigNameMap.put(mapIndex, xValues);
+                        mConfigDataMap.put(UiUtils.findStringBuId(R.string.good_product_count), yValue1);
+                        mConfigDataMap.put(UiUtils.findStringBuId(R.string.bad_product_count), yValue2);
+                        mPageConfigLinkMap.put(mapIndex, mConfigDataMap);
+                        mapIndex++;
+                        xValues = new ArrayList<>();
+                        yValue1 = new ArrayList<>();
+                        yValue2 = new ArrayList<>();
+                        configIndex = 0;
+                    }
+                }
+
+                mTvProjectPage.setText("1/" + mPageConfigLinkMap.size());
+
+
+                List<ChartDataBean> deviceValues = new ArrayList<>();
+                List<Float> DeviceValue1 = new ArrayList<>();
+                List<Float> DeviceValue2 = new ArrayList<>();
+
+
+                int deviceIndex = 0;
+                deviceMapIndex = 0;
+                for (int i = 0; i < mDeviceList.size(); i++) {
+                    goodCount += mDeviceList.get(i).getYes();
+                    badCount += mDeviceList.get(i).getNo();
+
+                    ChartDataBean chartDataBean = new ChartDataBean();
+                    chartDataBean.setName(mDeviceList.get(i).getName());
+                    chartDataBean.setConfigId(mDeviceList.get(i).getMac());
+                    chartDataBean.setType(mDeviceList.get(i).getType());
+                    deviceValues.add(chartDataBean);
+
+
+                    DeviceValue1.add((float) mDeviceList.get(i).getYes());
+                    DeviceValue2.add((float) mDeviceList.get(i).getNo());
+
+                    if (i == mDeviceList.size() - 1 && i < 5) {
+                        LinkedHashMap<String, List<Float>> mDeviceDataMap = new LinkedHashMap<>();
+                        mPageDeviceNameMap.put(deviceMapIndex, deviceValues);
+                        mDeviceDataMap.put(UiUtils.findStringBuId(R.string.good_product_count), DeviceValue1);
+                        mDeviceDataMap.put(UiUtils.findStringBuId(R.string.bad_product_count), DeviceValue2);
+                        mPageDeviceLinkMap.put(deviceMapIndex, mDeviceDataMap);
+                        break;
+                    }
+                    deviceIndex++;
+                    if (deviceIndex == 5 || i == mDeviceList.size() - 1) {
+                        LinkedHashMap<String, List<Float>> mDeviceDataMap = new LinkedHashMap<>();
+                        mPageDeviceNameMap.put(deviceMapIndex, deviceValues);
+                        mDeviceDataMap.put(UiUtils.findStringBuId(R.string.good_product_count), DeviceValue1);
+                        mDeviceDataMap.put(UiUtils.findStringBuId(R.string.bad_product_count), DeviceValue2);
+                        mPageDeviceLinkMap.put(deviceMapIndex, mDeviceDataMap);
+                        deviceMapIndex++;
+                        deviceValues = new ArrayList<>();
+                        DeviceValue1 = new ArrayList<>();
+                        DeviceValue2 = new ArrayList<>();
+                        deviceIndex = 0;
+                    }
+                }
+                mTvDevicePage.setText("1/" + mPageDeviceLinkMap.size());
+
+                mTvDeviceCount.setText(mDeviceList.size() + "");
+                mTvBadCount.setText(badCount + "");
+                mTvGoodCount.setText(goodCount + "");
+                mTvAllCount.setText(badCount + goodCount + "");
+
+                long l1 = System.currentTimeMillis();
+
+                Log.e(TAG, "getResultSuccess: " + (l1 - l));
+                try {
+                    if (mPageConfigNameMap.size() != 0 && mPageConfigLinkMap.size() != 0) {
+                        showBarChart(mBarChart, mPageConfigNameMap.get(0), mPageConfigLinkMap.get(0), colors, 0);
+                    }
+
+                    if (mPageDeviceNameMap.size() != 0 && mPageDeviceLinkMap.size() != 0) {
+                        showBarChart(mDeviceChart, mPageDeviceNameMap.get(0), mPageDeviceLinkMap.get(0), colors, 1);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                break;
+            default:
+                ToastUtils.showTextToast(resultBean.getMsg());
+                break;
+        }
+    }
+
+    @Override
+    public void getResultForConfigSuccess(DeviceResultForConfigBean resultBean) {
+
+    }
+
+    @Override
+    public void getResultForDeviceSuccess(DeviceResultForConfigBean resultBean) {
+
+    }
+
+    @Override
+    public void getCheckResultDetailSuccess(CheckResultDetailBean checkResultDetailBean) {
+
+    }
+
+    @Override
+    public String getConfigId() {
+
+        return mConfigId;
+    }
+
+    @Override
+    public Map<String, Object> getParms() {
+        return null;
+    }
+
+    @Override
+    public void onNetChange(int netMobile) {
+        super.onNetChange(netMobile);
+//        switch (netMobile) {
+//            case 1:
+//                mPresenter.getAllCheckResult(getActivity());
+//                break;
+//            case 0:
+//                mPresenter.getAllCheckResult(getActivity());
+//                break;
+//        }
+    }
+
 }

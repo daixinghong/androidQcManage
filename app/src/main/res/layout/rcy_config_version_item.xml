@@ -47,14 +47,14 @@
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2">
+            android:layout_weight="1">
 
             <RelativeLayout
                 android:id="@+id/rl_details"
                 android:layout_width="@dimen/dp_50"
                 android:layout_height="@dimen/dp_25"
+                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_10"
                 android:background="@drawable/button_shape">
 
                 <TextView
@@ -74,7 +74,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:layout_marginRight="@dimen/dp_10"
-                android:background="@drawable/button_shape">
+                android:background="@drawable/button_shape"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"

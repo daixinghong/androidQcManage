@@ -9,6 +9,9 @@
 
     <include layout="@layout/base_title"></include>
 
+
+
+
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pic_chart"
         android:layout_width="300dp"

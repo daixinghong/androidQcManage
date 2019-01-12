@@ -149,4 +149,57 @@
     <string name="bad_cloth_detail">不良布匹详情</string>
     <string name="model_">型号:</string>
     <string name="bad_product_list">不良品列表</string>
+    <string name="smart_qc_manage_app">智能QC管理应用version1.1.0</string>
+    <string name="date">日期:</string>
+    <string name="date_">日历</string>
+    <string name="opation">选项</string>
+    <string name="please_choose_query_opation">请选择搜索选项</string>
+    <string name="please_input_word">请输入搜索关键字</string>
+    <string name="online">在线状态:</string>
+    <string name="no_online">不在线状态:</string>
+    <string name="is_last_page">已是最后一页</string>
+    <string name="is_first_page">当前第一页</string>
+    <string name="device_count">设备数量</string>
+    <string name="start_date">开始日期</string>
+    <string name="end_date">结束日期</string>
+    <string name="please_choose">请选择</string>
+    <string name="hint_date">提示:开始日期和结束日期选择同一天就相当于查询那一天</string>
+    <string name="color_">颜色:</string>
+    <string name="entrusted_unit_">委托单位:</string>
+    <string name="empty_data">暂无数据</string>
+    <string name="request_timeout">请求超时</string>
+    <string name="cloth_grade_">布匹等级:</string>
+    <string name="check_date_">检测日期:</string>
+
+    <string name="material_calendar_monday">一</string>
+    <string name="material_calendar_tuesday">二</string>
+    <string name="material_calendar_wednesday">三</string>
+    <string name="material_calendar_thursday">四</string>
+    <string name="material_calendar_friday">五</string>
+    <string name="material_calendar_saturday">六</string>
+    <string name="material_calendar_sunday">日</string>
+
+    <array name="material_calendar_months_array">
+        <item>1月</item>
+        <item>2月</item>
+        <item>3月</item>
+        <item>4月</item>
+        <item>5月</item>
+        <item>6月</item>
+        <item>7月</item>
+        <item>8月</item>
+        <item>9月</item>
+        <item>10月</item>
+        <item>11月</item>
+        <item>12月</item>
+    </array>
+
+    <string name="material_calendar_today_button"></string>
+    <string name="material_calendar_positive_button">确定</string>
+    <string name="material_calendar_negative_button">取消</string>
+
+    <string name="after_tall">以后再说</string>
+    <string name="immediately_upgrade">立即更新</string>
+    <string name="weight_">重量:</string>
+
 </resources>

@@ -3,7 +3,7 @@ package com.sinano.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateUtils {
+public class DateUtil {
 
     /**
      * 时间戳转换成日期
