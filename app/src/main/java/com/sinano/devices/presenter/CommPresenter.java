@@ -22,4 +22,14 @@ public class CommPresenter {
                 .subscribe(mCommInterface::getTypeSuccess, mCommInterface::getDataError);
     }
 
+    public void getLastVersionInfo( ) {
+        Network
+                .getObserableIntenceComm()
+                .getLastVersionInfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mCommInterface::getLastAppVersionInfoSuccess, mCommInterface::getDataError);
+    }
+
+
 }

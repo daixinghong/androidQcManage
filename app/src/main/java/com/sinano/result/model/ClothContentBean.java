@@ -3,7 +3,7 @@ package com.sinano.result.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class ClothContentBean {
+public class ClothContentBean implements Serializable{
 
 
     private List<BadInfoBean> bad_info;
@@ -52,48 +52,69 @@ public class ClothContentBean {
         }
 
         public static class LocationBean implements Serializable {
+
             /**
-             * bottom : 110
-             * left : 232
-             * right : 456
-             * top : 741
+             * bottom : 471
+             * left : 388
+             * right : 1913
+             * top : 55
+             * x : 613
+             * y : 97
              */
 
-            private int bottom;
-            private int left;
-            private int right;
-            private int top;
+            private String bottom;
+            private String left;
+            private String right;
+            private String top;
+            private String x;
+            private String y;
 
-            public int getBottom() {
+            public String getBottom() {
                 return bottom;
             }
 
-            public void setBottom(int bottom) {
+            public void setBottom(String bottom) {
                 this.bottom = bottom;
             }
 
-            public int getLeft() {
+            public String getLeft() {
                 return left;
             }
 
-            public void setLeft(int left) {
+            public void setLeft(String left) {
                 this.left = left;
             }
 
-            public int getRight() {
+            public String getRight() {
                 return right;
             }
 
-            public void setRight(int right) {
+            public void setRight(String right) {
                 this.right = right;
             }
 
-            public int getTop() {
+            public String getTop() {
                 return top;
             }
 
-            public void setTop(int top) {
+            public void setTop(String top) {
                 this.top = top;
+            }
+
+            public String getX() {
+                return x;
+            }
+
+            public void setX(String x) {
+                this.x = x;
+            }
+
+            public String getY() {
+                return y;
+            }
+
+            public void setY(String y) {
+                this.y = y;
             }
         }
     }

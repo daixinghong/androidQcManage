@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/upgrade_shape"
@@ -10,18 +11,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_7"
         android:layout_marginTop="@dimen/dp_10"
         android:text="是否更新到1.2.1"
         android:textColor="@color/color_242525"
         android:textSize="@dimen/sp_15" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcy_version_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="大小约:5m"
+        android:textColor="@color/color_242525"
+        android:textSize="@dimen/sp_13" />
 
-    </android.support.v7.widget.RecyclerView>
+    <TextView
+        android:id="@+id/tv_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_7"
+        android:lineSpacingExtra="5dp"
+        android:text="更新设备详情"
+        android:textColor="@color/color_242525"
+        android:textSize="@dimen/sp_13" />
+
+    <com.beiing.flikerprogressbar.FlikerProgressBar
+        android:id="@+id/flikerbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_25"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_7"
+        android:visibility="gone"
+        app:loadingColor="@color/color_102869"
+        app:radius="8dp"
+        app:stopColor="#ff9800"
+        app:textSize="12sp" />
 
     <View
         android:layout_width="match_parent"
@@ -40,6 +67,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tv_cancle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -61,6 +89,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tv_stop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

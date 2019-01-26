@@ -2,11 +2,11 @@ package com.sinano.utils;
 
 public interface Constant {
 
-    String URL = "http://120.79.15.200:2048/api/";
+    String URL = "http://www.sinano-ai.com/api/";
 
-    String COMM = "http://120.79.15.200:2048/";
+    String COMM = "http://www.sinano-ai.com/";
 
-    String IMAGE_URL = "http://120.79.15.200/files/";
+    String IMAGE_URL = "http://www.sinano-ai.com/files/";
 
     String BUNDLE_PARMS = "bundleParms";
 
@@ -31,6 +31,8 @@ public interface Constant {
     String USER = "user";
 
     String ADMIN = "admin";
+
+    String SERVER_ID=  "serverId";
 
 
 }

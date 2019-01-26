@@ -6,8 +6,10 @@ import com.sinano.devices.model.ConfigListBean;
 import com.sinano.devices.model.DeviceListBean;
 import com.sinano.devices.model.TypeBean;
 import com.sinano.result.model.CheckResultDetailBean;
+import com.sinano.result.model.ClothDescForMd5Bean;
 import com.sinano.result.model.DeviceResultForConfigBean;
 import com.sinano.result.model.ResultBean;
+import com.sinano.user.model.AppVersionBean;
 import com.sinano.user.model.ChildUserBean;
 import com.sinano.user.model.LoginBean;
 import com.sinano.user.model.UserInfoBean;
@@ -212,5 +214,21 @@ public interface NetworkInterface {
      */
     @GET("cr")
     Observable<CheckResultDetailBean> getCheckResultDetail(@QueryMap Map<String, Object> map);
+
+    /**
+     * 获取最新的版本号
+     */
+    @GET("apk/latest/phone")
+    Observable<AppVersionBean> getLastVersionInfo();
+
+
+    /**
+     * 根据md5查询结果
+     *
+     * @return
+     */
+    @GET("cr/md5/{md5}")
+    Observable<ClothDescForMd5Bean> getCheckResultForMd5(@Path("md5") String md5);
+
 
 }

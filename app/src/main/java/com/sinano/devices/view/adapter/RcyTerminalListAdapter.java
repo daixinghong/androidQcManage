@@ -19,7 +19,7 @@ import java.util.List;
 
 public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalListAdapter.TerminalHolder> {
     private Context mContext;
-    private List<DeviceListBean.DataBean.PhoneBeanDevices> mList;
+    private List<DeviceListBean.DataBean.ClothDeviceBean> mList;
     private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
@@ -30,7 +30,7 @@ public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalList
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public RcyTerminalListAdapter(Context context, List<DeviceListBean.DataBean.PhoneBeanDevices> list) {
+    public RcyTerminalListAdapter(Context context, List<DeviceListBean.DataBean.ClothDeviceBean> list) {
         this.mContext = context;
         this.mList = list;
 
@@ -39,7 +39,7 @@ public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalList
     @Override
     public TerminalHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         TerminalHolder holder = new TerminalHolder(LayoutInflater.from(
-                mContext).inflate(R.layout.rcy_terminal_item_view, parent,
+                mContext).inflate(R.layout.rcy_cloth_device_item, parent,
                 false), mOnItemClickListener);
         return holder;
     }
@@ -48,18 +48,11 @@ public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalList
     public void onBindViewHolder(TerminalHolder holder, final int position) {
 
         if (mList.get(position).isOnline()) {
-            holder.mIvTerminal.setImageResource(R.mipmap.terminal);
+            holder.mIvTerminal.setImageResource(R.mipmap.child_plant);
         } else {
-            holder.mIvTerminal.setImageResource(R.mipmap.terminal_dark);
+            holder.mIvTerminal.setImageResource(R.mipmap.plant_dark);
         }
         holder.mTvTerminalName.setText(mList.get(position).getDeviceName());
-        holder.mLlterminal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                IntentUtils.startActivityForParms(mContext, TerminalDetailActivity.class, bundle);
-            }
-        });
     }
 
     @Override
@@ -72,16 +65,14 @@ public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalList
 
         private final TextView mTvTerminalName;
         private OnItemClickListener mOnItemClickListener;
-        private final LinearLayout mLlterminal;
         private final ImageView mIvTerminal;
 
 
         public TerminalHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
 
-            mTvTerminalName = itemView.findViewById(R.id.tv_terminal_name);
-            mLlterminal = itemView.findViewById(R.id.ll_terminal);
-            mIvTerminal = itemView.findViewById(R.id.iv_terimal);
+            mTvTerminalName = itemView.findViewById(R.id.tv_device_name);
+            mIvTerminal = itemView.findViewById(R.id.iv_device);
             this.mOnItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }

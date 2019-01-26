@@ -42,6 +42,16 @@ public class ResultPresenter {
                 .subscribe(mInterface::getResultForDeviceSuccess, mInterface::getDataError);
     }
 
+
+    public void getClothDetailForMd5(Context context,String md5) {
+        Network
+                .getObserableIntence(context)
+                .getCheckResultForMd5(md5)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mInterface::getClothResultDetailSuccess, mInterface::getDataError);
+    }
+
     public void getCheckResultDetail(Context context) {
         Network
                 .getObserableIntence(context)

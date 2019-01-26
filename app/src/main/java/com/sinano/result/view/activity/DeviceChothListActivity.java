@@ -23,6 +23,8 @@ import com.sinano.R;
 import com.sinano.base.BaseActivity;
 import com.sinano.result.model.CheckResultDetailBean;
 import com.sinano.result.model.ClothContentBean;
+import com.sinano.result.model.ClothDescBean;
+import com.sinano.result.model.ClothDescForMd5Bean;
 import com.sinano.result.model.DeviceResultForConfigBean;
 import com.sinano.result.model.ResultBean;
 import com.sinano.result.presenter.ResultInterface;
@@ -156,6 +158,10 @@ public class DeviceChothListActivity extends BaseActivity implements RcyClothLis
             String content = mList.get(position).getContent();
             ClothContentBean clothContentBean = mGson.fromJson(content, ClothContentBean.class);
             bundle.putSerializable("data", (ArrayList<ClothContentBean.BadInfoBean>) clothContentBean.getBad_info());
+
+            ClothDescBean clothDescBean = mGson.fromJson(mList.get(position).getDescription(), ClothDescBean.class);
+            bundle.putSerializable("desc", clothDescBean);
+
             IntentUtils.startActivityForParms(this, ClothBadTypeCountDetailActivity.class, bundle);
         } catch (Exception e) {
 
@@ -295,6 +301,11 @@ public class DeviceChothListActivity extends BaseActivity implements RcyClothLis
                 ToastUtils.showTextToast(checkResultDetailBean.getMsg());
                 break;
         }
+
+    }
+
+    @Override
+    public void getClothResultDetailSuccess(ClothDescForMd5Bean clothDescForMd5Bean) {
 
     }
 

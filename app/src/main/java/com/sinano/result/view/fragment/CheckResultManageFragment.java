@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ import com.sinano.base.BaseFragment;
 import com.sinano.devices.view.activity.DeviceResultForConfigActivity;
 import com.sinano.result.model.ChartDataBean;
 import com.sinano.result.model.CheckResultDetailBean;
+import com.sinano.result.model.ClothDescForMd5Bean;
 import com.sinano.result.model.DeviceResultForConfigBean;
 import com.sinano.result.model.ResultBean;
 import com.sinano.result.presenter.ResultInterface;
@@ -97,6 +99,8 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
     private int deviceMapIndex;
     private ResultPresenter mPresenter;
     private String mConfigId;
+    private LinearLayout mLlDeviceContainer;
+    private LinearLayout mLlConfigCheck;
 
 
     @Override
@@ -114,7 +118,6 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
     }
 
     private void initEvent() {
-        mTerminalListAdapter.setOnItemClickListener(this);
         mRlPartUpPage.setOnClickListener(this);
         mRlPartNextPage.setOnClickListener(this);
         mRlProjectUpPage.setOnClickListener(this);
@@ -173,8 +176,8 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
         mAdapter = new RcyCheckResultAdapter(getActivity(), null);
         mRcyProjectList.setAdapter(mAdapter);
 
-        mTerminalListAdapter = new RcyTerminalListAdapter(getActivity(), null);
-        mRcyDeviceList.setAdapter(mTerminalListAdapter);
+//        mTerminalListAdapter = new RcyTerminalListAdapter(getActivity(), null);
+//        mRcyDeviceList.setAdapter(mTerminalListAdapter);
 
 
         initBarChart(mBarChart);
@@ -205,6 +208,8 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
         mRlDeviceUpPage = view.findViewById(R.id.rl_device_up_page);
         mRlDeviceNextPage = view.findViewById(R.id.rl_device_next_page);
         mTvDevicePage = view.findViewById(R.id.tv_device_page);
+        mLlDeviceContainer = view.findViewById(R.id.ll_device_container);
+        mLlConfigCheck = view.findViewById(R.id.ll_config_check);
 
         mRlDeviceUpPage.setVisibility(View.VISIBLE);
         mRlPartUpPage.setVisibility(View.VISIBLE);
@@ -424,8 +429,17 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
                 mConfigList.clear();
                 mConfigList.addAll(config);
 
+                if (mConfigList.size() == 0) {
+                    mLlConfigCheck.setVisibility(View.GONE);
+                }
+
+
                 mDeviceList.clear();
                 mDeviceList.addAll(device);
+
+                if (mDeviceList.size() == 0) {
+                    mLlDeviceContainer.setVisibility(View.GONE);
+                }
 
                 mBarChart.animateY(1000, Easing.EasingOption.Linear);
                 mBarChart.animateX(1000, Easing.EasingOption.Linear);
@@ -563,6 +577,11 @@ public class CheckResultManageFragment extends BaseFragment implements RcyTermin
 
     @Override
     public void getCheckResultDetailSuccess(CheckResultDetailBean checkResultDetailBean) {
+
+    }
+
+    @Override
+    public void getClothResultDetailSuccess(ClothDescForMd5Bean clothDescForMd5Bean) {
 
     }
 

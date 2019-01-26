@@ -55,7 +55,7 @@ public class DialogUtils {
         WindowManager m = ((Activity) mContext).getWindowManager();
         Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
         WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-        p.width = (int) (d.getWidth() * 0.7); // 宽度设置为屏幕的0.65
+        p.width = (int) (d.getWidth() * 0.8); // 宽度设置为屏幕的0.65
         dialogWindow.setAttributes(p);
 
         if (!sDialog.isShowing()) {
@@ -64,6 +64,32 @@ public class DialogUtils {
 
         return sDialog;
     }
+
+
+    public static Dialog createUpdateAppDialog(View view) {
+
+        Dialog sDialog = new AlertDialog
+                .Builder(mContext)
+                .setView(view)
+                .show();
+
+        sDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        sDialog.setCanceledOnTouchOutside(false);
+
+        Window dialogWindow = sDialog.getWindow();
+        WindowManager m = ((Activity) mContext).getWindowManager();
+        Display d = m.getDefaultDisplay(); // 获取屏幕宽、高用
+        WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+        p.width = (int) (d.getWidth() * 0.8); // 宽度设置为屏幕的0.65
+        dialogWindow.setAttributes(p);
+
+        if (!sDialog.isShowing()) {
+            sDialog.show();
+        }
+        return sDialog;
+    }
+
+
 
 
     public static void dissDialog() {

@@ -218,127 +218,143 @@
                 android:layout_height="@dimen/dp_200"
                 android:visibility="gone"></com.github.mikephil.charting.charts.BarChart>
 
-
             <LinearLayout
+                android:id="@+id/ll_config_check"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_30"
-                android:gravity="center_vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:text="@string/project_check_preview"
-                    android:textColor="@color/color_292929" />
 
-                <RelativeLayout
-                    android:id="@+id/rl_project_up_page"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:background="@drawable/button_shape"
-                    android:visibility="gone">
+                <LinearLayout
+                    android:id="@+id/ll_config_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="上一页"
-                        android:textColor="@color/white" />
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:text="@string/project_check_preview"
+                        android:textColor="@color/color_292929" />
 
-                </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_project_up_page"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:background="@drawable/button_selector"
+                        android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tv_project_page"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:textColor="@color/color_242525" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="上一页"
+                            android:textColor="@color/white" />
 
-                <RelativeLayout
-                    android:id="@+id/rl_project_next_page"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:background="@drawable/button_shape">
+                    </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/tv_project_page"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="下一页"
-                        android:textColor="@color/white" />
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:textColor="@color/color_242525" />
 
-                </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_project_next_page"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:background="@drawable/button_selector">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="下一页"
+                            android:textColor="@color/white" />
+
+                    </RelativeLayout>
 
 
+                </LinearLayout>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chart_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_200"></com.github.mikephil.charting.charts.BarChart>
             </LinearLayout>
 
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chart_result"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_200"></com.github.mikephil.charting.charts.BarChart>
-
             <LinearLayout
+                android:id="@+id/ll_device_container"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_30"
-                android:gravity="center_vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:text="@string/device_check_result_preview"
-                    android:textColor="@color/color_292929" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_device_up_page"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:background="@drawable/button_shape"
-                    android:visibility="gone">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="上一页"
-                        android:textColor="@color/white" />
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:text="@string/device_check_result_preview"
+                        android:textColor="@color/color_292929" />
 
-                </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_device_up_page"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:background="@drawable/button_selector"
+                        android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tv_device_page"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:textColor="@color/color_242525" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="上一页"
+                            android:textColor="@color/white" />
 
-                <RelativeLayout
-                    android:id="@+id/rl_device_next_page"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="@dimen/dp_20"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:background="@drawable/button_shape">
+                    </RelativeLayout>
 
                     <TextView
+                        android:id="@+id/tv_device_page"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:text="下一页"
-                        android:textColor="@color/white" />
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:textColor="@color/color_242525" />
 
-                </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rl_device_next_page"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_marginLeft="@dimen/dp_5"
+                        android:background="@drawable/button_selector">
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="下一页"
+                            android:textColor="@color/white" />
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chart_result_device"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_200"
+                    android:layout_marginBottom="@dimen/dp_10"></com.github.mikephil.charting.charts.BarChart>
 
             </LinearLayout>
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/chart_result_device"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_200"></com.github.mikephil.charting.charts.BarChart>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -430,6 +446,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"></android.support.v7.widget.RecyclerView>
+
+
+            <include layout="@layout/empty_view"></include>
 
 
         </LinearLayout>

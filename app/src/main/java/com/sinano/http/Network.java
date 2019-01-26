@@ -13,6 +13,7 @@ import com.sinano.utils.IntentUtils;
 import com.sinano.utils.NetUtil;
 import com.sinano.utils.SpUtils;
 import com.sinano.utils.ToastUtils;
+import com.sinano.utils.UiUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -85,12 +86,17 @@ public class Network {
                                 if (context != null)
                                     DialogUtils.dissDialog();
                                 break;
-                            case 403:
+                            case 401:
                                 SpUtils.putParms(BaseApplication.getContext(), Constant.TOKEN, "");
                                 SpUtils.putParms(BaseApplication.getContext(), Constant.USER_NAME, "");
                                 SpUtils.putParms(BaseApplication.getContext(), Constant.USER_ID, "");
                                 SpUtils.putParms(BaseApplication.getContext(), Constant.USER, "");
-                                ToastUtils.showTextToast(proceed.message());
+                                UiUtils.getHandler().post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.card_guoqi));
+                                    }
+                                });
                                 IntentUtils.startActivity(BaseApplication.getContext(), LoginActivity.class);
                                 break;
                         }

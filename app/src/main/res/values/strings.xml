@@ -142,14 +142,16 @@
     <string name="cloth_list">布匹列表</string>
     <string name="cloth_number_">布匹号:</string>
     <string name="pot_number_">缸号:</string>
-    <string name="length_">长度:</string>
+    <string name="length_">米数:</string>
     <string name="bad_count_">不良数量:</string>
     <string name="operate_user_">操作人:</string>
     <string name="check_part_list">零件不良位置数据表</string>
     <string name="bad_cloth_detail">不良布匹详情</string>
+    <string name="bcloth_detail">布匹详情</string>
+    <string name="title_number_">款号:</string>
     <string name="model_">型号:</string>
     <string name="bad_product_list">不良品列表</string>
-    <string name="smart_qc_manage_app">智能QC管理应用version1.1.0</string>
+    <string name="smart_qc_manage_app">智能QC管理应用版本</string>
     <string name="date">日期:</string>
     <string name="date_">日历</string>
     <string name="opation">选项</string>
@@ -168,8 +170,10 @@
     <string name="entrusted_unit_">委托单位:</string>
     <string name="empty_data">暂无数据</string>
     <string name="request_timeout">请求超时</string>
-    <string name="cloth_grade_">布匹等级:</string>
+    <string name="cloth_grade_">布匹分数:</string>
     <string name="check_date_">检测日期:</string>
+    <string name="width_fu">宽幅:</string>
+    <string name="door_fu">门幅:</string>
 
     <string name="material_calendar_monday">一</string>
     <string name="material_calendar_tuesday">二</string>
@@ -201,5 +205,29 @@
     <string name="after_tall">以后再说</string>
     <string name="immediately_upgrade">立即更新</string>
     <string name="weight_">重量:</string>
-
+    <string name="is_update_to">是否更新到</string>
+    <string name="cancle">取消</string>
+    <string name="keep">继续</string>
+    <string name="stop">暂停</string>
+    <string name="download_fail">下载失败</string>
+    <string name="not_be_device">暂无设备</string>
+    <string name="not_be_check_result">暂无检测结果数据</string>
+    <string name="cloth_device">验布机设备</string>
+    <string name="bad_name">不良名称</string>
+    <string name="left">左边</string>
+    <string name="top">上边</string>
+    <string name="right">右边</string>
+    <string name="bottom">底边</string>
+    <string name="bad_info_place_parms">不良现象位置信息</string>
+    <string name="phone_device">电子产品检验设备</string>
+    <string name="x">X轴</string>
+    <string name="y">Y轴</string>
+    <string name="next">下一条</string>
+    <string name="cloth_detail">布匹详情</string>
+    <string name="synchronization_success">同步请求已发送</string>
+    <string name="card_guoqi">登录信息过期,请重新登录</string>
+    <string name="check_number_">检验单号:</string>
+    <string name="product_name_">品名:</string>
+    <string name="cloth_length_">匹长:</string>
+    <string name="order_number">订单号:</string>
 </resources>

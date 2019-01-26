@@ -1,6 +1,8 @@
 package com.sinano.result.model;
 
-public class ClothDescBean {
+import java.io.Serializable;
+
+public class ClothDescBean implements Serializable {
 
 
     /**
@@ -20,12 +22,48 @@ public class ClothDescBean {
     private String cylinder_numbe;
     private String entrusted_unit;
     private String inspection_number;
-    private int length;
+    private String length;
     private String order_number;
     private String product_name;
     private String title;
     private String user;
     private String weight;
+    private int cust;
+    private String date;
+    private String width;
+    private String door;
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+    public String getDoor() {
+        return door;
+    }
+
+    public void setDoor(String door) {
+        this.door = door;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getCust() {
+        return cust;
+    }
+
+    public void setCust(int cust) {
+        this.cust = cust;
+    }
 
     public String getColor() {
         return color;
@@ -59,11 +97,11 @@ public class ClothDescBean {
         this.inspection_number = inspection_number;
     }
 
-    public int getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(int length) {
+    public void setLength(String length) {
         this.length = length;
     }
 

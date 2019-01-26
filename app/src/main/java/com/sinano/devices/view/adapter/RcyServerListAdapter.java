@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.sinano.R;
 import com.sinano.devices.model.DeviceListBean;
 import com.sinano.devices.view.activity.LocalServerDetailsActivity;
+import com.sinano.devices.view.activity.TerminalDetailActivity;
+import com.sinano.result.view.adapter.RcyTerminalListAdapter;
 import com.sinano.utils.IntentUtils;
 
 import java.util.List;
@@ -37,7 +39,6 @@ public class RcyServerListAdapter extends RecyclerView.Adapter<RcyServerListAdap
     public RcyServerListAdapter(Context context, List<DeviceListBean.DataBean.ServerBean> list) {
         this.mContext = context;
         this.mList = list;
-
     }
 
     @Override
@@ -51,13 +52,9 @@ public class RcyServerListAdapter extends RecyclerView.Adapter<RcyServerListAdap
     @Override
     public void onBindViewHolder(ServerHolder holder, final int position) {
 
-        if (mList.get(position).isOnline()) {
-            holder.mIvServer.setImageResource(R.mipmap.server);
-        } else {
-            holder.mIvServer.setImageResource(R.mipmap.server_dark);
-        }
         holder.mTvServerName.setText(mList.get(position).getServerNo());
-        RcyTerminalListAdapter adapter = new RcyTerminalListAdapter(mContext, mList.get(position).getPhoneDevice());
+
+        RcyTerminalListAdapter adapter = new RcyTerminalListAdapter(mContext, mList.get(position).getPhoneDevice(), mList.get(position).getMac());
         holder.mRcyTerminal.setAdapter(adapter);
         holder.mLlServer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +64,20 @@ public class RcyServerListAdapter extends RecyclerView.Adapter<RcyServerListAdap
 
             }
         });
+
+        if (mList.get(position).isOnline()) {
+            holder.mIvServer.setImageResource(R.mipmap.server_test);
+        } else {
+            holder.mIvServer.setImageResource(R.mipmap.server_dark);
+        }
+        adapter.setOnItemClickListener(new RcyTerminalListAdapter.OnItemClickListener() {
+            @Override
+            public void setOnItemClickListener(View view, int position) {
+                Bundle bundle = new Bundle();
+                IntentUtils.startActivityForParms(mContext, TerminalDetailActivity.class, bundle);
+            }
+        });
+
 
     }
 

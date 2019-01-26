@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.sinano.R;
 import com.sinano.base.BaseActivity;
 import com.sinano.result.model.CheckResultDetailBean;
+import com.sinano.result.model.ClothDescForMd5Bean;
 import com.sinano.result.model.DeviceResultForConfigBean;
 import com.sinano.result.model.ResultBean;
 import com.sinano.result.presenter.ResultInterface;
@@ -163,6 +164,11 @@ public class TerminalResultDetailActivity extends BaseActivity implements Result
 
     @Override
     public void getCheckResultDetailSuccess(CheckResultDetailBean checkResultDetailBean) {
+
+    }
+
+    @Override
+    public void getClothResultDetailSuccess(ClothDescForMd5Bean clothDescForMd5Bean) {
 
     }
 

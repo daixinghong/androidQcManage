@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dp_10"
+    android:background="@drawable/device_selector"
     android:orientation="vertical">
 
 
@@ -17,8 +18,7 @@
             android:id="@+id/iv_terimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@mipmap/terminal" />
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/tv_terminal_name"

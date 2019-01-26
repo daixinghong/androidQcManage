@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f7f7f7"
     android:orientation="vertical">
 
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -25,22 +26,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_30"
+                    android:layout_marginLeft="@dimen/dp_10"
                     android:text="@string/online"
                     android:textColor="@color/color_242525"
                     android:textSize="@dimen/sp_15" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="@dimen/dp_15"
-                    android:src="@mipmap/server" />
+                    android:src="@mipmap/server_test" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="@dimen/dp_5"
-                    android:src="@mipmap/terminal" />
+                    android:src="@mipmap/child_plant" />
 
 
                 <TextView
@@ -52,24 +53,30 @@
                     android:textSize="@dimen/sp_15" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="@dimen/dp_15"
                     android:src="@mipmap/server_dark" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
                     android:layout_marginLeft="@dimen/dp_5"
-                    android:src="@mipmap/terminal_dark" />
+                    android:src="@mipmap/plant_dark" />
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_f5f5f5"></View>
 
             <LinearLayout
+                android:id="@+id/ll_device_container"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                android:background="@drawable/tab_shape">
+                android:background="@drawable/tab_shape"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -104,17 +111,47 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tv_phone_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="@string/phone_device"
+                android:textColor="@color/color_242525"
+                android:textSize="@dimen/sp_15" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rcy_server_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/tab_list_shape"></android.support.v7.widget.RecyclerView>
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"></android.support.v7.widget.RecyclerView>
 
+            <TextView
+                android:id="@+id/tv_cloth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/cloth_device"
+                android:textColor="@color/color_242525"
+                android:textSize="@dimen/sp_15" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcy_cloth_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginBottom="@dimen/dp_10"></android.support.v7.widget.RecyclerView>
+
+
+            <include layout="@layout/empty_view"></include>
 
         </LinearLayout>
 
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </LinearLayout>

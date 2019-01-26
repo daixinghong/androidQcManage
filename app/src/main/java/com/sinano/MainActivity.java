@@ -1,12 +1,13 @@
 package com.sinano;
 
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -14,8 +15,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.arialyy.annotations.Download;
+import com.arialyy.aria.core.Aria;
+import com.arialyy.aria.core.download.DownloadTask;
+import com.beiing.flikerprogressbar.FlikerProgressBar;
 import com.sinano.base.BaseActivity;
 import com.sinano.devices.model.TypeBean;
 import com.sinano.devices.presenter.CommInterface;
@@ -23,18 +27,23 @@ import com.sinano.devices.presenter.CommPresenter;
 import com.sinano.devices.view.fragment.DevicesManageFragment;
 import com.sinano.devices.view.fragment.SupperCompanyDeviceFragment;
 import com.sinano.receiver.NetBroadcastReceiver;
+import com.sinano.result.view.activity.ClothBadTypeCountDetailActivity;
 import com.sinano.result.view.fragment.CheckResultManageFragment;
+import com.sinano.user.model.AppVersionBean;
 import com.sinano.user.view.activity.UserCenterActivity;
-import com.sinano.user.view.adapter.RcyVersionInfoAdapter;
 import com.sinano.user.view.manage.MyFragment;
+import com.sinano.utils.APKVersionCodeUtils;
 import com.sinano.utils.Constant;
 import com.sinano.utils.DialogUtils;
 import com.sinano.utils.IntentUtils;
+import com.sinano.utils.OSUtils;
 import com.sinano.utils.SpUtils;
 import com.sinano.utils.ToastUtils;
 import com.sinano.utils.UiUtils;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import java.io.File;
+import java.text.NumberFormat;
 import java.util.List;
 
 import butterknife.BindView;
@@ -69,7 +78,14 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private MyFragment mMyFragment;
     private int REQUEST_CODE = 12138;
     private SupperCompanyDeviceFragment mSupperCompanyDeviceFragment;
-
+    private FlikerProgressBar mBar;
+    private TextView mTvStop;
+    private final String DOWNLOAD_PATH = "/sdcard/sinano/apk";
+    private Dialog mUpdateAppDialog;
+    private NumberFormat nf = NumberFormat.getNumberInstance();
+    private boolean mCancle;
+    private boolean mStop;
+    private boolean mStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +100,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
         filter.setPriority(1000);
         registerReceiver(new NetBroadcastReceiver(), filter);
+        nf.setMaximumFractionDigits(2);
 
+        Aria.download(this).register();
 
         String userName = (String) SpUtils.getParam(this, Constant.USER_NAME, "");
         mTvUserName.setText(userName);
@@ -94,9 +112,16 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
         CommPresenter presenter = new CommPresenter(this);
         presenter.getType();
+        presenter.getLastVersionInfo();
 
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String userName = (String) SpUtils.getParam(this, Constant.USER_NAME, "");
+        mTvUserName.setText(userName);
     }
 
     @Override
@@ -114,6 +139,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK
                 && event.getAction() == KeyEvent.ACTION_DOWN) {
+
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.press2finsh));
                 exitTime = System.currentTimeMillis();
@@ -249,10 +275,13 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     return;
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
+
                     String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    Toast.makeText(this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                    Bundle bundles = new Bundle();
+                    bundles.putString("md5", "c962694bbb265e3d797a353f91f371a3");
+                    IntentUtils.startActivityForParms(this, ClothBadTypeCountDetailActivity.class, bundles);
+
                 } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
-                    Toast.makeText(MainActivity.this, "解析二维码失败", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -270,4 +299,119 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 break;
         }
     }
+
+    @Override
+    public void getLastAppVersionInfoSuccess(AppVersionBean appVersionBean) {
+        switch (appVersionBean.getCode()) {
+            case 200:
+                AppVersionBean.DataBean data = appVersionBean.getData();
+                String versionNo = data.getVersionNo();
+                int versionCode = APKVersionCodeUtils.getVersionCode(this);
+
+                if (versionCode < Integer.parseInt(versionNo)) {    //有新版本
+                    showDialog(data);
+                }
+                break;
+            default:
+                ToastUtils.showTextToast(appVersionBean.getMsg());
+                break;
+        }
+    }
+
+    public void showDialog(AppVersionBean.DataBean dataBean) {
+
+        View views = View.inflate(this, R.layout.dialog_updialog_view, null);
+        TextView tvTitle = views.findViewById(R.id.tv_title);
+        mBar = views.findViewById(R.id.flikerbar);
+        TextView tvSize = views.findViewById(R.id.tv_size);
+        TextView tvCanCle = views.findViewById(R.id.tv_cancle);
+        mTvStop = views.findViewById(R.id.tv_stop);
+        String remarks = dataBean.getRemarks();
+        TextView tvInfo = views.findViewById(R.id.tv_info);
+        tvInfo.setText(remarks);
+        RelativeLayout rlAfter = views.findViewById(R.id.rl_after);
+        RelativeLayout rlUpgrade = views.findViewById(R.id.rl_upgrade);
+
+        File file = new File(DOWNLOAD_PATH);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+
+        tvSize.setText("大小约:" + nf.format(dataBean.getSize() / 1024 / 1024) + "m");
+        tvTitle.setText(UiUtils.findStringBuId(R.string.is_update_to) + dataBean.getName());
+
+        mUpdateAppDialog = DialogUtils.createUpdateAppDialog(views);
+
+
+        if (dataBean.getForcedUpdate() == 0) {
+            mStatus = true;
+        }
+
+        mUpdateAppDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                if (mStatus) {
+                    finish();
+                }
+            }
+        });
+        rlAfter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!mCancle) {
+                    Aria.download(this).load(dataBean.getUri()).cancel();
+                }
+                if (mStatus) {  //强制更新
+                    finish();
+                }
+                mCancle = !mCancle;
+                mUpdateAppDialog.dismiss();
+            }
+        });
+
+        rlUpgrade.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!mStop) {
+                    mBar.setVisibility(View.VISIBLE);
+                    tvCanCle.setText(UiUtils.findStringBuId(R.string.cancel));
+                    mTvStop.setText(UiUtils.findStringBuId(R.string.stop));
+                    Aria.download(this)
+                            .load("http://" + dataBean.getUri())
+                            .setDownloadPath(DOWNLOAD_PATH + "/" + dataBean.getName() + ".apk")
+                            .start();
+                } else {
+                    Aria.download(this).load(dataBean.getUri()).stop();
+                    mTvStop.setText(UiUtils.findStringBuId(R.string.keep));
+                }
+                mStop = !mStop;
+
+            }
+        });
+
+    }
+
+    @Download.onTaskRunning
+    protected void running(DownloadTask task) {
+        Log.e(TAG, "running: " + task.getPercent());
+        mBar.setProgress(task.getPercent());
+    }
+
+    @Download.onTaskComplete
+    void taskComplete(DownloadTask task) {
+        //在这里处理任务完成的状态
+        mUpdateAppDialog.dismiss();
+        File file = new File(task.getDownloadPath());
+        OSUtils.installAPK(this, file);
+    }
+
+    @Download.onTaskFail
+    void taskfail(DownloadTask task) {
+        //在这里处理任务完成的状态
+        ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.download_fail));
+        mTvStop.setText(UiUtils.findStringBuId(R.string.keep));
+        mStop = false;
+    }
+
 }
