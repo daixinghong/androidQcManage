@@ -22,13 +22,32 @@ public class CommPresenter {
                 .subscribe(mCommInterface::getTypeSuccess, mCommInterface::getDataError);
     }
 
-    public void getLastVersionInfo( ) {
+    public void getLastVersionInfo() {
         Network
                 .getObserableIntenceComm()
                 .getLastVersionInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mCommInterface::getLastAppVersionInfoSuccess, mCommInterface::getDataError);
+    }
+
+
+    public void registerDevice(String result) {
+        Network
+                .getObserableIntence()
+                .registerDevice(result)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mCommInterface::registerDeviceSuccess, mCommInterface::getDataError);
+    }
+
+    public void bindCompany(String companyId) {
+        Network
+                .getObserableIntence()
+                .bindCompany(companyId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mCommInterface::bindCompanySuccess, mCommInterface::getDataError);
     }
 
 

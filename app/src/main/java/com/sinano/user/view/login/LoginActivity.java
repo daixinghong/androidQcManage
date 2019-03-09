@@ -28,7 +28,9 @@ import com.sinano.websocket.SocketClient;
 
 import org.java_websocket.handshake.ServerHandshake;
 
+import java.net.SocketTimeoutException;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,7 +109,6 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
         mEtInputUserName.setText((String) SpUtils.getParam(this, Constant.USER, ""));
         mPresenter = new LoginPresenter(this);
 
-
     }
 
     @Override
@@ -129,7 +130,7 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
                 SpUtils.putParms(this, Constant.ADMIN, loginBean.getData().isAdmin());
                 IntentUtils.startActivityAndFinish(this, MainActivity.class);
                 break;
-            case -1:
+            default:
                 ToastUtils.showTextToast(loginBean.getMsg());
                 break;
         }
@@ -195,6 +196,21 @@ public class LoginActivity extends BaseActivity implements LoginInterface {
 //                IntentUtils.startActivityAndFinish(this, MainActivity.class);
 
                 break;
+        }
+    }
+
+
+    @Override
+    public void getDataError(Throwable throwable) {
+        if (throwable instanceof UnknownHostException) {
+            ToastUtils.showTextToast("网络无连接");
+            mBtnId.revertAnimation();
+        } else if (throwable instanceof SocketTimeoutException) {
+            ToastUtils.showTextToast("请求超时");
+            mBtnId.revertAnimation();
+        } else {
+            ToastUtils.showTextToast("请求出错");
+            mBtnId.revertAnimation();
         }
     }
 

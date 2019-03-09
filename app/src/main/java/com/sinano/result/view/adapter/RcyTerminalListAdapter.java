@@ -55,13 +55,12 @@ public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalList
         }
 
 
-
     }
 
 
     @Override
     public int getItemCount() {
-        return mList == null ? 8 : mList.size();
+        return mList == null ? 0 : mList.size();
     }
 
 

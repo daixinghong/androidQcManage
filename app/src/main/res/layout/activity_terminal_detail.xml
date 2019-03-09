@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/color_f7f7f7"
     android:orientation="vertical"
     tools:context=".devices.view.activity.TerminalDetailActivity">
 
     <include layout="@layout/base_title"></include>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,51 +22,105 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40">
+                android:layout_height="@dimen/dp_100"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:background="@drawable/cloth_shape"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="@string/device_info"
+                    android:textColor="@color/color_242525"
+                    android:textSize="@dimen/sp_15" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_20"
-                    android:text="@string/device_seq"
-                    android:textColor="@color/color_101010" />
+                    android:layout_marginTop="@dimen/dp_15">
 
-                <TextView
-                    android:id="@+id/tv_device_seq"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:text="001"
-                    android:textColor="@color/color_101010" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/device_seq"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_device_seq"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/device_status"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/dp_20"
-                    android:text="@string/use_config_"
-                    android:textColor="@color/color_101010" />
+                    android:layout_marginTop="@dimen/dp_15">
 
-                <TextView
-                    android:id="@+id/tv_use_config"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:text="iphone"
-                    android:textColor="@color/color_101010" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mac_address"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_mac"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/operate_user_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_opreate_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
+
+                </LinearLayout>
 
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40">
+                android:layout_height="@dimen/dp_40"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,82 +161,214 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40">
+                android:layout_height="@dimen/dp_70"
+                android:layout_margin="@dimen/dp_10"
+                android:background="@drawable/cloth_shape"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:text="@string/current_count_"
-                    android:textColor="@color/color_101010" />
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="@string/current_check_info"
+                    android:textColor="@color/color_242525"
+                    android:textSize="@dimen/sp_15" />
 
-                <TextView
-                    android:id="@+id/tv_current_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:text="1500"
-                    android:textColor="@color/color_101010" />
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:text="@string/all_count_"
-                    android:textColor="@color/color_101010" />
+                    android:layout_marginTop="@dimen/dp_15">
 
-                <TextView
-                    android:id="@+id/tv_all_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_15"
-                    android:text="100000"
-                    android:textColor="@color/color_101010" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/current_checking_cloth_meter_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_current_checking_cloth_meter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/current_checking_cloth_bad_count_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_current_checking_cloth_bad_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_15"
+                        android:textColor="@color/color_101010" />
+                </LinearLayout>
 
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40">
+                android:layout_height="@dimen/dp_100"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@drawable/cloth_shape"
+                android:orientation="vertical">
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:text="@string/current_bad_count_"
-                    android:textColor="@color/color_101010" />
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="@string/current_prodcting_info"
+                    android:textColor="@color/color_242525"
+                    android:textSize="@dimen/sp_15" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_15">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/current_day_check_meter_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_current_day_check_meter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/current_bad_count_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_current_bad_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_15"
+                        android:textColor="@color/color_101010" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_15">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/current_day_check_count_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_current_cloth_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_100"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:background="@drawable/cloth_shape"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tv_current_bad_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:text="10"
-                    android:textColor="@color/color_101010" />
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:text="@string/device_all_check_info"
+                    android:textColor="@color/color_242525"
+                    android:textSize="@dimen/sp_15" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_20"
-                    android:text="@string/all_bad_count_"
-                    android:textColor="@color/color_101010" />
 
-                <TextView
-                    android:id="@+id/tv_all_bad_count"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/dp_15"
-                    android:text="500"
-                    android:textColor="@color/color_101010" />
+                    android:layout_marginTop="@dimen/dp_15">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/device_all_check_cloth_count_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_device_all_check_cloth_count_"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/device_all_check_cloth_meter_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_device_all_check_cloth_meter_"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_15"
+                        android:textColor="@color/color_101010" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_15">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/device_all_check_bad_count_"
+                        android:textColor="@color/color_101010" />
+
+                    <TextView
+                        android:id="@+id/tv_device_all_check_bad_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:textColor="@color/color_101010" />
+
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -192,13 +380,15 @@
                 android:layout_marginTop="@dimen/dp_5"
                 android:text="@string/config_list"
                 android:textColor="@color/contents_text"
-                android:textSize="@dimen/sp_15" />
+                android:textSize="@dimen/sp_15"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginTop="@dimen/dp_5"
-                android:background="@drawable/tab_shape">
+                android:background="@drawable/tab_shape"
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="0dp"
@@ -270,7 +460,8 @@
                 android:id="@+id/rcy_config_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/tab_list_shape"></android.support.v7.widget.RecyclerView>
+                android:background="@drawable/tab_list_shape"
+                android:visibility="gone"></android.support.v7.widget.RecyclerView>
 
 
         </LinearLayout>

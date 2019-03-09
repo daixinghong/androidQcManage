@@ -13,7 +13,16 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.sinano.base.BaseActivity;
+import com.sinano.base.BaseResultBean;
+import com.sinano.devices.model.TypeBean;
+import com.sinano.devices.presenter.CommInterface;
+import com.sinano.devices.presenter.CommPresenter;
+import com.sinano.user.model.AppVersionBean;
+import com.sinano.user.view.login.LoginActivity;
 import com.sinano.utils.FileUtils;
+import com.sinano.utils.IntentUtils;
+import com.sinano.utils.ToastUtils;
+import com.sinano.utils.UiUtils;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
@@ -22,11 +31,12 @@ import java.io.File;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class CustomCaptureActivity extends BaseActivity {
+public class CustomCaptureActivity extends BaseActivity implements CommInterface {
 
     @BindView(R.id.rl_album)
     RelativeLayout mRlAlbum;
     private int REQUEST_IMAGE = 12137;
+    private CommPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +48,7 @@ public class CustomCaptureActivity extends BaseActivity {
     private void init() {
         CaptureFragment captureFragment = new CaptureFragment();
         captureFragment.setAnalyzeCallback(analyzeCallback);
-        CodeUtils.setFragmentArgs(captureFragment,R.layout.my_camera);
+        CodeUtils.setFragmentArgs(captureFragment, R.layout.my_camera);
         getSupportFragmentManager().beginTransaction().replace(R.id.fl_my_container, captureFragment).commit();
         captureFragment.setCameraInitCallBack(new CaptureFragment.CameraInitCallBack() {
             @Override
@@ -50,6 +60,8 @@ public class CustomCaptureActivity extends BaseActivity {
                 }
             }
         });
+
+        mPresenter = new CommPresenter(this);
 
     }
 
@@ -108,19 +120,21 @@ public class CustomCaptureActivity extends BaseActivity {
                 ContentResolver cr = getContentResolver();
                 try {
                     Bitmap mBitmap = MediaStore.Images.Media.getBitmap(cr, uri);//显得到bitmap图
+                    long l = System.currentTimeMillis();
+                    File fileDirs = new File("/sdcard/srcImage/" + l + ".png");
 
-                    String filePath = "/sdcard/qcManage";
-                    File file = new File(filePath);
-                    if(!file.exists()){
-                        file.mkdirs();
-                    }
+                    fileDirs.createNewFile();
 
-                    File bitmapFile = FileUtils.bitmapToFile(mBitmap, filePath);
+                    File bitmapFile = FileUtils.bitmapToFile(mBitmap, fileDirs);
 
                     CodeUtils.analyzeBitmap(bitmapFile.getPath(), new CodeUtils.AnalyzeCallback() {
                         @Override
                         public void onAnalyzeSuccess(Bitmap mBitmap, String result) {
-                            Toast.makeText(CustomCaptureActivity.this, "解析结果:" + result, Toast.LENGTH_LONG).show();
+                            if (result.contains("bindCompany:")) {
+                                String[] split = result.split(":");
+                                mPresenter.bindCompany(split[1]);
+                            }
+
                         }
 
                         @Override
@@ -139,5 +153,31 @@ public class CustomCaptureActivity extends BaseActivity {
 
         }
 
+    }
+
+    @Override
+    public void getTypeSuccess(TypeBean typeBean) {
+
+    }
+
+    @Override
+    public void getLastAppVersionInfoSuccess(AppVersionBean appVersionBean) {
+
+    }
+
+    @Override
+    public void registerDeviceSuccess(BaseResultBean baseResultBean) {
+
+    }
+
+    @Override
+    public void bindCompanySuccess(BaseResultBean baseResultBean) {
+
+        if (baseResultBean.getCode() == 200) {
+            ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.bind_success_please_reset_login));
+            IntentUtils.startActivityAndFinish(this, LoginActivity.class);
+        } else {
+            ToastUtils.showTextToast(baseResultBean.getMsg());
+        }
     }
 }

@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/login_log" />
+            android:src="@mipmap/app_logo" />
 
         <LinearLayout
             android:id="@+id/ll_login_info"
@@ -156,7 +156,6 @@
             app:spinning_bar_color="#FFF"
             app:spinning_bar_padding="6dp"
             app:spinning_bar_width="4dp"></br.com.simplepass.loading_button_lib.customViews.CircularProgressButton>
-
 
     </RelativeLayout>
 

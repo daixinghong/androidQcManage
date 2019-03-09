@@ -49,7 +49,7 @@ public class LoginBean {
         private int uid;
         private String username;
         private String nickname;
-        private long phone;
+        private String phone;
         private boolean admin;
         private String createTime;
         private String token;
@@ -78,11 +78,11 @@ public class LoginBean {
             this.nickname = nickname;
         }
 
-        public long getPhone() {
+        public String getPhone() {
             return phone;
         }
 
-        public void setPhone(long phone) {
+        public void setPhone(String phone) {
             this.phone = phone;
         }
 

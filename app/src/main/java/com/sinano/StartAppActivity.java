@@ -10,12 +10,15 @@ import android.text.TextUtils;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.sinano.base.BaseActivity;
 import com.sinano.user.view.login.LoginActivity;
+import com.sinano.utils.APKVersionCodeUtils;
 import com.sinano.utils.Constant;
 import com.sinano.utils.IntentUtils;
 import com.sinano.utils.SpUtils;
+import com.sinano.utils.UiUtils;
 
 import butterknife.BindView;
 
@@ -24,6 +27,8 @@ public class StartAppActivity extends BaseActivity {
     @BindView(R.id.relativeLayout)
     RelativeLayout mRelativeLayout;
     private final int REQUEST_CODE = 12138;
+    @BindView(R.id.tv_version)
+    TextView mTvVersion;
     private PackageInfo pi;
 
     @Override
@@ -40,6 +45,10 @@ public class StartAppActivity extends BaseActivity {
 
 
     private void init() {
+
+        APKVersionCodeUtils.getVerName(this);
+
+        mTvVersion.setText(UiUtils.findStringBuId(R.string.smart_qc_manage_app) + APKVersionCodeUtils.getVerName(this));
 
         AlphaAnimation anima = new AlphaAnimation(0.3f, 1.0f);
         anima.setDuration(2000);// 设置动画显示时间
@@ -96,7 +105,7 @@ public class StartAppActivity extends BaseActivity {
 
 
     private void showWaringDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setTitle("警告！")
                 .setMessage("请前往设置->应用->sinano->权限中打开相关权限，否则功能无法正常运行！")
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -106,7 +115,6 @@ public class StartAppActivity extends BaseActivity {
                     }
                 }).show();
     }
-
 
 
 }

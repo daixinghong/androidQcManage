@@ -9,10 +9,11 @@ import android.widget.TextView;
 
 import com.sinano.R;
 import com.sinano.base.BaseFragment;
+import com.sinano.base.BaseResultBean;
+import com.sinano.devices.model.DeviceInfoBean;
 import com.sinano.devices.model.DeviceListBean;
 import com.sinano.devices.presenter.DeviceInterface;
 import com.sinano.devices.presenter.DevicePresenter;
-import com.sinano.devices.view.activity.LocalServerDetailsActivity;
 import com.sinano.devices.view.activity.TerminalDetailActivity;
 import com.sinano.devices.view.adapter.RcyNoQueryServerAdapter;
 import com.sinano.devices.view.adapter.RcyServerListAdapter;
@@ -60,7 +61,7 @@ public class DevicesManageFragment extends BaseFragment implements RcyNoQuerySer
         };
         mRcyServerList.setLayoutManager(manager);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1) {
             @Override
             public boolean canScrollVertically() {
                 return false;
@@ -77,14 +78,21 @@ public class DevicesManageFragment extends BaseFragment implements RcyNoQuerySer
         mDevicePresenter = new DevicePresenter(this);
         mDevicePresenter.getDevicesStatus(getActivity());
 
+
         mClothListAdapter.setOnItemClickListener(new RcyTerminalListAdapter.OnItemClickListener() {
             @Override
             public void setOnItemClickListener(View view, int position) {
+
+                if (mList.get(position).isOnline()) {
+                    mDevicePresenter.publishDevice(mList.get(position).getMac());
+                }
+
                 Bundle bundle = new Bundle();
+                bundle.putBoolean("isOnLine", mList.get(position).isOnline());
+                bundle.putString("mac", mList.get(position).getMac());
                 IntentUtils.startActivityForParms(getActivity(), TerminalDetailActivity.class, bundle);
             }
         });
-
 
     }
 
@@ -92,7 +100,7 @@ public class DevicesManageFragment extends BaseFragment implements RcyNoQuerySer
     @Override
     public void setOnItemClickListener(View view, int position) {
         Bundle bundle = new Bundle();
-        IntentUtils.startActivityForParms(getActivity(), LocalServerDetailsActivity.class, bundle);
+//        IntentUtils.startActivityForParms(getActivity(), LocalServerDetailsActivity.class, bundle);
 
     }
 
@@ -106,6 +114,8 @@ public class DevicesManageFragment extends BaseFragment implements RcyNoQuerySer
 
                 if (mPhoneDeviceList == null || mPhoneDeviceList.size() == 0) {
                     mTvPhoneTitle.setVisibility(View.GONE);
+                } else {
+                    mTvPhoneTitle.setVisibility(View.VISIBLE);
                 }
 
                 List<DeviceListBean.DataBean.ClothDeviceBean> clothDevice = deviceListBean.getData().getClothDevice();
@@ -129,6 +139,16 @@ public class DevicesManageFragment extends BaseFragment implements RcyNoQuerySer
     @Override
     public String getCompanyId() {
         return null;
+    }
+
+    @Override
+    public void getDeviceDetailSuccess(DeviceInfoBean deviceInfoBean) {
+
+    }
+
+    @Override
+    public void publishDeviceSuccess(BaseResultBean baseResultBean) {
+
     }
 
     @Override

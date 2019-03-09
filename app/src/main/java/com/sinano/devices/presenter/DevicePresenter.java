@@ -22,12 +22,41 @@ public class DevicePresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mInterface::getDeviceInfoSuccess, mInterface::getDataError);
     }
-    public void getDevicesStatus( ) {
+
+    public void getDevicesStatus() {
         Network
                 .getObserableIntence()
                 .getDeviceStatusList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(mInterface::getDeviceInfoSuccess, mInterface::getDataError);
+    }
+
+    public void getDeviceInfo(Context context,String mac) {
+        Network
+                .getObserableIntence(context)
+                .getDeviceInfo(mac)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mInterface::getDeviceDetailSuccess, mInterface::getDataError);
+    }
+
+    public void getDeviceInfo(String mac) {
+        Network
+                .getObserableIntence()
+                .getDeviceInfo(mac)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mInterface::getDeviceDetailSuccess, mInterface::getDataError);
+    }
+
+
+    public void publishDevice(String mac) {
+        Network
+                .getObserableIntence()
+                .publishDevice(mac)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(mInterface::publishDeviceSuccess, mInterface::getDataError);
     }
 }

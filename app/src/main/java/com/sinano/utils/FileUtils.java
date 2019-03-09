@@ -9,17 +9,16 @@ import java.io.IOException;
 
 public class FileUtils {
 
-    public static File bitmapToFile(Bitmap bitmap, String filepath){
-        File file=new File(filepath);//将要保存图片的路径
+    public static File bitmapToFile(Bitmap bitmap, File filepath){
         try {
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filepath));
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
             bos.flush();
             bos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return file;
+        return filepath;
     }
 
 

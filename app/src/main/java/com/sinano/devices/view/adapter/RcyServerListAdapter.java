@@ -103,7 +103,7 @@ public class RcyServerListAdapter extends RecyclerView.Adapter<RcyServerListAdap
             mRcyTerminal = itemView.findViewById(R.id.rcy_terminal_list);
             mLlServer = itemView.findViewById(R.id.ll_server);
             mIvServer = itemView.findViewById(R.id.iv_server);
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 3) {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(mContext, 2) {
                 @Override
                 public boolean canScrollVertically() {
                     return false;

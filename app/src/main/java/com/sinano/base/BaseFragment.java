@@ -10,7 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.data.BarDataSet;
+import com.sinano.R;
 import com.sinano.receiver.NetBroadcastReceiver;
+import com.sinano.utils.DialogUtils;
+import com.sinano.utils.ToastUtils;
+import com.sinano.utils.UiUtils;
+
+import java.net.SocketTimeoutException;
 
 public abstract class BaseFragment extends Fragment implements NetBroadcastReceiver.NetEvevt {
 
@@ -50,6 +56,13 @@ public abstract class BaseFragment extends Fragment implements NetBroadcastRecei
     }
 
     public void getDataError(Throwable throwable) {
+
+        if (throwable instanceof SocketTimeoutException) {
+            ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.request_timeout));
+        }
+        if (DialogUtils.sDialog != null) {
+            DialogUtils.dissDialog();
+        }
 
         Log.e(TAG, "getDataError: " + throwable.getMessage());
     }

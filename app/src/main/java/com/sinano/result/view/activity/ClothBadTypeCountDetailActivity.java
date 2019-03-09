@@ -39,6 +39,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+@SuppressWarnings("unchecked")
 public class ClothBadTypeCountDetailActivity extends BaseActivity implements ResultInterface {
 
     @BindView(R.id.rl_back)

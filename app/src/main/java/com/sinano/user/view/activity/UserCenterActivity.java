@@ -50,10 +50,6 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
     EditText mEtPhone;
     @BindView(R.id.rl_phone)
     RelativeLayout mRlPhone;
-    @BindView(R.id.tv_server_count)
-    TextView mTvServerCount;
-    @BindView(R.id.tv_terminal_count)
-    TextView mTvTerminalCount;
     @BindView(R.id.ll_about)
     LinearLayout mLlAbout;
     @BindView(R.id.tv_contact_phone)
@@ -74,8 +70,12 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
     LinearLayout mLlDevice;
     @BindView(R.id.ll_son_manage)
     LinearLayout mLlSonManage;
+    @BindView(R.id.ll_qr_code)
+    LinearLayout mLlQrCode;
     private LoginPresenter mPresenter;
     private UserManagePresenter mUserManagePresenter;
+    private int mId;
+    private String mCompanyId = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,15 +90,15 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
         mPresenter = new LoginPresenter(this);
         mRlSave.setVisibility(View.VISIBLE);
 
-        if (!(boolean) SpUtils.getParam(this, Constant.ADMIN, false)) {
-            mLlSonManage.setVisibility(View.GONE);
-            mLlDevice.setVisibility(View.GONE);
+        if ((boolean) SpUtils.getParam(this, Constant.ADMIN, false)) {
+            mLlSonManage.setVisibility(View.VISIBLE);
+            mLlDevice.setVisibility(View.VISIBLE);
         }
 
         mUserManagePresenter = new UserManagePresenter(this);
 
-        int id = (int) SpUtils.getParam(this, Constant.USER_ID, 0);
-        mUserManagePresenter.getUserInfo(id);
+        mId = (int) SpUtils.getParam(this, Constant.USER_ID, 0);
+        mUserManagePresenter.getUserInfo(mId);
 
     }
 
@@ -109,14 +109,14 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
 
     @OnClick({R.id.rl_back, R.id.ll_user_manage, R.id.rl_phone, R.id.ll_about,
             R.id.rl_contact, R.id.rl_user, R.id.rl_logout, R.id.ll_updata_password,
-            R.id.rl_save})
+            R.id.rl_save, R.id.ll_qr_code})
     public void onViewClicked(View view) {
+        Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.rl_back:
                 finish();
                 break;
             case R.id.ll_user_manage:
-                Bundle bundle = new Bundle();
                 IntentUtils.startActivityForParms(this, UserManageActivity.class, bundle);
                 break;
             case R.id.ll_about:
@@ -156,6 +156,15 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
                     return;
                 }
                 mUserManagePresenter.updataUserInfo(mEtNickName.getText().toString().trim(), mEtPhone.getText().toString().trim());
+                break;
+            case R.id.ll_qr_code:           //二维码名片
+
+                if (!TextUtils.isEmpty(mCompanyId)) {
+                    bundle.putString(Constant.ID, mCompanyId);
+                    IntentUtils.startActivityForParms(this, MyQRActivity.class, bundle);
+                } else {
+                    ToastUtils.showTextToast(UiUtils.findStringBuId(R.string.company_info_empty));
+                }
 
                 break;
         }
@@ -228,6 +237,10 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
                 mEtPhone.setText(data.getPhone());
                 mTvCompanyName.setText(data.getCompanyName());
                 mEtNickName.setText(data.getNickname());
+                mCompanyId = data.getCompanyId();
+                if(TextUtils.isEmpty(mCompanyId)){
+                    mTvCompanyName.setText(UiUtils.findStringBuId(R.string.company_info_empty));
+                }
                 break;
             case 405:
                 SpUtils.putParms(this, Constant.TOKEN, "");
@@ -257,4 +270,5 @@ public class UserCenterActivity extends BaseActivity implements LoginInterface, 
         }
 
     }
+
 }

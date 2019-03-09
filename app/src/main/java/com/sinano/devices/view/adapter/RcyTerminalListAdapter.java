@@ -1,19 +1,16 @@
 package com.sinano.devices.view.adapter;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sinano.R;
 import com.sinano.devices.model.DeviceListBean;
-import com.sinano.devices.view.activity.TerminalDetailActivity;
-import com.sinano.utils.IntentUtils;
+import com.sinano.utils.UiUtils;
 
 import java.util.List;
 
@@ -49,10 +46,13 @@ public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalList
 
         if (mList.get(position).isOnline()) {
             holder.mIvTerminal.setImageResource(R.mipmap.child_plant);
+            holder.mTvDeviceStatus.setText(UiUtils.findStringBuId(R.string.device_online));
         } else {
             holder.mIvTerminal.setImageResource(R.mipmap.plant_dark);
+            holder.mTvDeviceStatus.setText(UiUtils.findStringBuId(R.string.device_upline));
         }
         holder.mTvTerminalName.setText(mList.get(position).getDeviceName());
+        holder.mTvMac.setText(mList.get(position).getMac());
     }
 
     @Override
@@ -66,6 +66,8 @@ public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalList
         private final TextView mTvTerminalName;
         private OnItemClickListener mOnItemClickListener;
         private final ImageView mIvTerminal;
+        private final TextView mTvMac;
+        private final TextView mTvDeviceStatus;
 
 
         public TerminalHolder(View itemView, OnItemClickListener onItemClickListener) {
@@ -73,6 +75,8 @@ public class RcyTerminalListAdapter extends RecyclerView.Adapter<RcyTerminalList
 
             mTvTerminalName = itemView.findViewById(R.id.tv_device_name);
             mIvTerminal = itemView.findViewById(R.id.iv_device);
+            mTvMac = itemView.findViewById(R.id.tv_mac);
+            mTvDeviceStatus = itemView.findViewById(R.id.tv_device_status);
             this.mOnItemClickListener = onItemClickListener;
             itemView.setOnClickListener(this);
         }

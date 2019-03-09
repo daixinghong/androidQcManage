@@ -5,21 +5,29 @@ android {
     defaultConfig {
         applicationId "com.sinano"
         minSdkVersion 17
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion 27
+        versionCode 3
+        versionName "1.1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
+            buildConfigField "boolean", "LOG_DEBUG", "false" //不显示log
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+
 }
 
 dependencies {
@@ -27,9 +35,10 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:multidex:1.0.3'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    //retrofit  newwork
+    //retrofit  network
     implementation 'com.squareup.retrofit2:retrofit:2.0.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.0.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.1.2'
@@ -60,11 +69,11 @@ dependencies {
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
     //图片加载框架
     implementation 'com.github.bumptech.glide:glide:3.7.0'
-
     //下载
     implementation 'com.arialyy.aria:aria-core:3.5.4'
     annotationProcessor 'com.arialyy.aria:aria-compiler:3.5.4'
-
-    //    //横向进度条
+    //横向进度条
     implementation project(':flickerprogressbar')
+    implementation files('libs/commons.jar')
+    //对话框
 }

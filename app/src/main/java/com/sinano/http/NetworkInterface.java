@@ -3,6 +3,7 @@ package com.sinano.http;
 import com.sinano.base.BaseResultBean;
 import com.sinano.devices.model.ConfigDetailBean;
 import com.sinano.devices.model.ConfigListBean;
+import com.sinano.devices.model.DeviceInfoBean;
 import com.sinano.devices.model.DeviceListBean;
 import com.sinano.devices.model.TypeBean;
 import com.sinano.result.model.CheckResultDetailBean;
@@ -229,6 +230,39 @@ public interface NetworkInterface {
      */
     @GET("cr/md5/{md5}")
     Observable<ClothDescForMd5Bean> getCheckResultForMd5(@Path("md5") String md5);
+
+    /**
+     * 注册设备
+     *
+     * @return
+     */
+    @POST("device/register")
+    Observable<BaseResultBean> registerDevice(@Query("diskSeq") String seq);
+
+
+    /**
+     * 获取最新的设备信息
+     *
+     * @return
+     */
+    @GET("device/getDeviceInfo")
+    Observable<DeviceInfoBean> getDeviceInfo(@Query("mac") String mac);
+
+    /**
+     * 提醒设备更新信息
+     *
+     * @return
+     */
+    @GET("device/publishMac")
+    Observable<BaseResultBean> publishDevice(@Query("mac") String mac);
+
+    /**
+     * 绑定公司
+     *
+     * @return
+     */
+    @POST("user/bindCompany")
+    Observable<BaseResultBean> bindCompany(@Query("companyId") String companyId);
 
 
 }

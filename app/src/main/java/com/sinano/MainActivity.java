@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,6 +20,7 @@ import com.arialyy.aria.core.Aria;
 import com.arialyy.aria.core.download.DownloadTask;
 import com.beiing.flikerprogressbar.FlikerProgressBar;
 import com.sinano.base.BaseActivity;
+import com.sinano.base.BaseResultBean;
 import com.sinano.devices.model.TypeBean;
 import com.sinano.devices.presenter.CommInterface;
 import com.sinano.devices.presenter.CommPresenter;
@@ -42,12 +42,15 @@ import com.sinano.utils.ToastUtils;
 import com.sinano.utils.UiUtils;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
 
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener, CommInterface {
 
@@ -86,6 +89,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private boolean mCancle;
     private boolean mStop;
     private boolean mStatus;
+    private CommPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,9 +114,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         mRdGroup.setOnCheckedChangeListener(this);
         mRdMyDevices.setChecked(true);
 
-        CommPresenter presenter = new CommPresenter(this);
-        presenter.getType();
-        presenter.getLastVersionInfo();
+        mPresenter = new CommPresenter(this);
+        mPresenter.getType();
+        mPresenter.getLastVersionInfo();
 
 
     }
@@ -132,7 +136,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(new NetBroadcastReceiver());
     }
 
     @Override
@@ -276,12 +279,22 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_SUCCESS) {
 
-                    String result = bundle.getString(CodeUtils.RESULT_STRING);
-                    Bundle bundles = new Bundle();
-                    bundles.putString("md5", "c962694bbb265e3d797a353f91f371a3");
-                    IntentUtils.startActivityForParms(this, ClothBadTypeCountDetailActivity.class, bundles);
+                    boolean isAdmin = (boolean) SpUtils.getParam(this, Constant.ADMIN, false);
 
-                } else if (bundle.getInt(CodeUtils.RESULT_TYPE) == CodeUtils.RESULT_FAILED) {
+                    String result = bundle.getString(CodeUtils.RESULT_STRING);
+                    if (result.contains("md5")) {       //查看布匹信息
+                        Bundle bundles = new Bundle();
+                        bundles.putString("md5", "c962694bbb265e3d797a353f91f371a3");
+                        IntentUtils.startActivityForParms(this, ClothBadTypeCountDetailActivity.class, bundles);
+                    } else {        //设备注册
+                        if (isAdmin) {
+                            mPresenter.registerDevice(result);
+                        } else {
+                            bundle.putString("error", UiUtils.findStringBuId(R.string.no_permission));
+                            IntentUtils.startActivityForParms(this, ShowQRActivity.class, bundle);
+                        }
+
+                    }
                 }
             }
         }
@@ -316,6 +329,32 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 ToastUtils.showTextToast(appVersionBean.getMsg());
                 break;
         }
+    }
+
+    @Override
+    public void registerDeviceSuccess(BaseResultBean baseResultBean) {
+
+        Bundle bundle = new Bundle();
+        switch (baseResultBean.getCode()) {
+            case 200:
+                String mac = (String) baseResultBean.getData();
+                bundle.putString("mac", mac);
+                IntentUtils.startActivityForParms(this, ShowQRActivity.class, bundle);
+                break;
+            default:
+                bundle.putString("error", baseResultBean.getMsg());
+                IntentUtils.startActivityForParms(this, ShowQRActivity.class, bundle);
+                break;
+        }
+
+
+    }
+
+    @Override
+    public void bindCompanySuccess(BaseResultBean baseResultBean) {
+        Bundle bundle = new Bundle();
+        bundle.putString("error", baseResultBean.getMsg());
+        IntentUtils.startActivityForParms(this, ShowQRActivity.class, bundle);
     }
 
     public void showDialog(AppVersionBean.DataBean dataBean) {
@@ -372,7 +411,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         rlUpgrade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String uri = dataBean.getUri();
+                Log.e(TAG, "onClick: " + uri);
                 if (!mStop) {
                     mBar.setVisibility(View.VISIBLE);
                     tvCanCle.setText(UiUtils.findStringBuId(R.string.cancel));

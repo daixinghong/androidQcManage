@@ -2,11 +2,13 @@ package com.sinano.utils;
 
 public interface Constant {
 
-    String URL = "http://www.sinano-ai.com/api/";
+//    String URL = "https://www.sinano-ai.com/api/";
 
-    String COMM = "http://www.sinano-ai.com/";
+    String URL = "http://192.168.1.105:82/api/";
 
-    String IMAGE_URL = "http://www.sinano-ai.com/files/";
+    String COMM = "https://www.sinano-ai.com/";
+
+    String IMAGE_URL = "https://www.sinano-ai.com/files/";
 
     String BUNDLE_PARMS = "bundleParms";
 
@@ -33,6 +35,6 @@ public interface Constant {
     String ADMIN = "admin";
 
     String SERVER_ID=  "serverId";
-
+    String PUBLIC_PEM = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCl3cz9vlwHKlu/MsthXY9gFpgNaY//IqaIOjMqFJia6iW+BEOykW9o7odWXMUoP4nfHVpJ1JP4yu7pAOyEsLjXwYUiN5Nu2EVT+4PrsfJ9vDmlHlfy6n/2BTG3PfQa//3FSBjWGSydExY1YhYnwPWF1NfIsVavDlcaw7c/QOMWGQIDAQAB";
 
 }

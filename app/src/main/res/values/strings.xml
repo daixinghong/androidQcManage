@@ -1,7 +1,9 @@
 <resources>
-    <string name="app_name">sinano</string>
+    <string name="app_name">硅纳智慧</string>
     <string name="press2finsh">再按一次退出程序</string>
     <string name="save">保存</string>
+    <string name="save_success">保存成功</string>
+    <string name="success">成功</string>
     <string name="login_user_hint">请输入账号</string>
     <string name="login_password_hint">请输入密码</string>
     <string name="login">登录</string>
@@ -70,6 +72,8 @@
     <string name="device_seq">设备编号:</string>
     <string name="use_config_">使用配置:</string>
     <string name="current_count_">当日产量:</string>
+    <string name="current_day_check_count_">当日检测布匹匹数:</string>
+    <string name="current_day_check_meter_">当日检测布匹米数:</string>
     <string name="all_count_">总产量:</string>
     <string name="current_bad_count_">当日不良数量:</string>
     <string name="all_bad_count_">总计不良数量:</string>
@@ -230,4 +234,25 @@
     <string name="product_name_">品名:</string>
     <string name="cloth_length_">匹长:</string>
     <string name="order_number">订单号:</string>
+    <string name="scan_result">扫描结果</string>
+    <string name="no_permission">无权限</string>
+    <string name="device_miss_line">设备不在线,无法查看设备信息</string>
+    <string name="device_status">设备状态:</string>
+    <string name="check_all_meter_">检测总米数:</string>
+    <string name="device_all_count">总检测匹数:</string>
+    <string name="current_prodcting_info">当日生产信息:</string>
+    <string name="mac_address">mac地址:</string>
+    <string name="current_check_info">当前布匹检测信息</string>
+    <string name="current_checking_cloth_meter_">当前检测米数:</string>
+    <string name="current_checking_cloth_bad_count_">当前检测不良数:</string>
+    <string name="device_all_check_info">总计检测信息</string>
+    <string name="device_all_check_cloth_count_">总检测匹数:</string>
+    <string name="device_all_check_cloth_meter_">检测总米数:</string>
+    <string name="device_all_check_bad_count_">设备共计检测不良数量:</string>
+    <string name="device_online">在线</string>
+    <string name="device_upline">离线</string>
+    <string name="qr_code_card">公司二维码</string>
+    <string name="is_manager">当前用户是管理员,已绑定公司</string>
+    <string name="company_info_empty">没有绑定公司</string>
+    <string name="bind_success_please_reset_login">绑定成功请重新登陆账号</string>
 </resources>

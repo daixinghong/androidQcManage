@@ -19,6 +19,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_70"
                 android:gravity="center_vertical">
@@ -112,6 +113,7 @@
             </LinearLayout>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_phone_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
